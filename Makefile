@@ -4,4 +4,4 @@ build/GWar.class:
 run:
 	cd build; java GWar
 clean:
-	rm build/*.class
+	rm -v build/*.class
