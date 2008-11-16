@@ -34,8 +34,9 @@
          else
          {
             g.setColor(java.awt.Color.BLUE.darker().darker());//new java.awt.Color(133,57,0));
-         g.setColor(java.awt.Color.BLUE.darker().darker());//new java.awt.Color(133,57,0));
-         g.fillRect((int)x,(int)y,(int)width,(int)height);
+            g.setColor(java.awt.Color.BLUE.darker().darker());//new java.awt.Color(133,57,0));
+            g.fillRect((int)x,(int)y,(int)width,(int)height);
+	 }
       }
        public void draw(java.awt.Graphics g, double xScale, double yScale)
       {

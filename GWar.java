@@ -25,13 +25,14 @@
       public Bumper[] level1={new Bumper(100,300,400,15),new Bumper(150,250,100,5,true),new Bumper(350,250,100,5,true), new Bumper(250,200,100,5,true)};
       public Bumper[] level2={new Bumper(100,300,400,25),new Bumper (125,325,350,25)};
       //public Bumper[] level2={/*A*/new Bumper(200,175,100,10), /*B*/new Bumper(150,250,100,10),/*C*/ new Bumper(225,325,60,10,true), /*D*/new Bumper(75, 400, 300, 15,true),
-         							/*V*/new Bumper(350,325,30,10),/*E*/new Bumper(350,75,20,175),/*N*/ new Bumper(400,500,50,15), /*M*/new Bumper(480, 440 ,40,10),
-         							/*L*/new Bumper(510, 375,80,10, true), /*J*/new Bumper(430,290,40,10,true),/*F*/new Bumper(410,160,40,5,true),/*H*/new Bumper(450,230,50,10,true),
-         							/*G*/new Bumper(530,125,300,20),/*I*/new Bumper(600,230,60,15),/*K*/new SpeedBumper(640,320,60,10,-5,0), /*U*/new SpeedBumper(700,600,300,20,0,-20), /*X*/new SpeedBumper(100,575,200,20,0,-20),
-         							/*Y*/new SpeedBumper(450,675,200,10,0,-15)};
+//         							/*V*/new Bumper(350,325,30,10),/*E*/new Bumper(350,75,20,175),/*N*/ new Bumper(400,500,50,15), /*M*/new Bumper(480, 440 ,40,10),
+//         							/*L*/new Bumper(510, 375,80,10, true), /*J*/new Bumper(430,290,40,10,true),/*F*/new Bumper(410,160,40,5,true),/*H*/new Bumper(450,230,50,10,true),
+//         							/*G*/new Bumper(530,125,300,20),/*I*/new Bumper(600,230,60,15),/*K*/new SpeedBumper(640,320,60,10,-5,0), /*U*/new SpeedBumper(700,600,300,20,0,-20), /*X*/new SpeedBumper(100,575,200,20,0,-20),
+//         							/*Y*/new SpeedBumper(450,675,200,10,0,-15)};
+								
       //public Bumper[] level2={new Bumper(100,300,400,25),new Bumper (125,325,350,25)};
       public Bumper[] level3={new Bumper(250,200,100,150),new Bumper(50,300,150,10),new Bumper(400,300,150,10)};
-      public Bumper[] level4={new Bumper(100,150,100,10,true),new Bumper(400,150,100,10,true),new Bumper(250,200,100,5,true), new Bumper(50,300,75,5,true), new Bumper(475,300,75,5,true),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
+      public Bumper[] level4={new Bumper(100,150,100,10,true),new Bumper(400,150,100,10,true),new Bumper(250,200,100,5,true), new SpeedBumper(50,300,75,5,0,-15), new SpeedBumper(475,300,75,5,0,-15),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
       public Bumper[] bump=level1;   
       public boolean[] isAI = new boolean[]{true, true, false};    
       public KListener kl = new KListener();
