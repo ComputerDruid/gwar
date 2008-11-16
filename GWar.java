@@ -551,8 +551,10 @@
                      bump=level1;
                   else if(LevelSel==2)
                      bump=level2;
-                  else
+                  else if(LevelSel==3)
                      bump=level3;
+                  else
+                     bump=level4;
                   drawB();
                }
                else if (selected==5){
