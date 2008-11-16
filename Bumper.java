@@ -27,12 +27,31 @@
       }
        public void draw(java.awt.Graphics g)
       {
+         if(this instanceof SpeedBumper)
+         {
+            g.setColor(java.awt.Color.green);
+         }
+         else
+         {
+            g.setColor(java.awt.Color.BLUE.darker().darker());//new java.awt.Color(133,57,0));
          g.setColor(java.awt.Color.BLUE.darker().darker());//new java.awt.Color(133,57,0));
          g.fillRect((int)x,(int)y,(int)width,(int)height);
       }
-      public void draw(java.awt.Graphics g, double xScale, double yScale)
+       public void draw(java.awt.Graphics g, double xScale, double yScale)
       {
-         g.setColor(java.awt.Color.BLUE.darker().darker());//new java.awt.Color(133,57,0));
+         if(this instanceof SpeedBumper)
+         {
+            g.setColor(java.awt.Color.green);
+         }
+         else
+         {
+            g.setColor(java.awt.Color.BLUE.darker().darker());//new java.awt.Color(133,57,0));
+         }
+         g.fillRect((int)(x*xScale),(int)(y*yScale),(int)(width*xScale),(int)(height*yScale));
+      }
+       public void draw(java.awt.Graphics g, double xScale, double yScale,java.awt.Color c)
+      {
+         g.setColor(c);//new java.awt.Color(133,57,0));
          g.fillRect((int)(x*xScale),(int)(y*yScale),(int)(width*xScale),(int)(height*yScale));
       }
        public boolean hIntersects(Item i){   
