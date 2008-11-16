@@ -74,7 +74,7 @@
             dx = -dx;
          }
          lX = x;
-      	lY = y;
+         lY = y;
          y += dy;
          x += dx;
          onbumper=onBumper();
@@ -244,6 +244,13 @@
             }
          return false;
       }
+       public Bumper onWhatBumper(){
+         for(int k=0;k<world.bump.length;k++)
+            if (world.bump[k].onBumper(this)){
+               return world.bump[k];
+            }
+         return null;
+      }
        public int checkBumper(double pdx, double pdy){
          for(int k=0;k<world.bump.length;k++)
             if (checkBumper(world.bump[k],pdx,pdy))
@@ -368,24 +375,24 @@
          super.draw(g,world.xScale,world.yScale);
          if (flashcount>0){
             if(world.sparkles){
-		 Color[] colors = {Color.white,Color.blue,Color.yellow};
-	         int ranColor,ranX,ranY;
-            	 for(int a=0;a<10;a++){
-               		ranColor  = (int)(Math.random()*colors.length);
-               		ranX = (int)(Math.random()*(this.r*2+10))-5;
-               		ranY = (int)(Math.random()*(this.r*2+10))-5;
-               		g.setColor(colors[ranColor]);
-               		g.fillOval((int)((this.lX-this.r+ranX-1)*world.xScale),(int)((this.lY-this.r+ranY-1)*world.yScale),(int)(2*world.xScale),(int)(2*world.yScale));
-            	 }
-	     }
-	    else{
-            g.setColor(new java.awt.Color(255,75,75));
-            if(!flashleft)
-               g.fillPolygon(new int[]{(int)(xflash*world.xScale),(int)((xflash-r)*world.xScale),(int)((xflash-(r/2))*world.xScale),(int)((xflash-r)*world.xScale)},new int[]{(int)(yflash*world.yScale),(int)((yflash+r)*world.yScale),(int)(yflash*world.yScale),(int)((yflash-r)*world.yScale)},4);
-            else
-               g.fillPolygon(new int[]{(int)(xflash*world.xScale),(int)((xflash+r)*world.xScale),(int)((xflash+(r/2))*world.xScale),(int)((xflash+r)*world.xScale)},new int[]{(int)(yflash*world.yScale),(int)((yflash+r)*world.yScale),(int)(yflash*world.yScale),(int)((yflash-r)*world.yScale)},4);
+               Color[] colors = {Color.white,Color.blue,Color.yellow};
+               int ranColor,ranX,ranY;
+               for(int a=0;a<10;a++){
+                  ranColor  = (int)(Math.random()*colors.length);
+                  ranX = (int)(Math.random()*(this.r*2+10))-5;
+                  ranY = (int)(Math.random()*(this.r*2+10))-5;
+                  g.setColor(colors[ranColor]);
+                  g.fillOval((int)((this.lX-this.r+ranX-1)*world.xScale),(int)((this.lY-this.r+ranY-1)*world.yScale),(int)(2*world.xScale),(int)(2*world.yScale));
+               }
+            }
+            else{
+               g.setColor(new java.awt.Color(255,75,75));
+               if(!flashleft)
+                  g.fillPolygon(new int[]{(int)(xflash*world.xScale),(int)((xflash-r)*world.xScale),(int)((xflash-(r/2))*world.xScale),(int)((xflash-r)*world.xScale)},new int[]{(int)(yflash*world.yScale),(int)((yflash+r)*world.yScale),(int)(yflash*world.yScale),(int)((yflash-r)*world.yScale)},4);
+               else
+                  g.fillPolygon(new int[]{(int)(xflash*world.xScale),(int)((xflash+r)*world.xScale),(int)((xflash+(r/2))*world.xScale),(int)((xflash+r)*world.xScale)},new int[]{(int)(yflash*world.yScale),(int)((yflash+r)*world.yScale),(int)(yflash*world.yScale),(int)((yflash-r)*world.yScale)},4);
                
-		}
+            }
          }
          if(DEBUG==true){
             g.setColor(new java.awt.Color(255,255,0));

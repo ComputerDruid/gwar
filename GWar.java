@@ -24,6 +24,12 @@
       private int numalive = TOTALPLAYERS;  
       public Bumper[] level1={new Bumper(100,300,400,15),new Bumper(150,250,100,5,true),new Bumper(350,250,100,5,true), new Bumper(250,200,100,5,true)};
       public Bumper[] level2={new Bumper(100,300,400,25),new Bumper (125,325,350,25)};
+      //public Bumper[] level2={/*A*/new Bumper(200,175,100,10), /*B*/new Bumper(150,250,100,10),/*C*/ new Bumper(225,325,60,10,true), /*D*/new Bumper(75, 400, 300, 15,true),
+         							/*V*/new Bumper(350,325,30,10),/*E*/new Bumper(350,75,20,175),/*N*/ new Bumper(400,500,50,15), /*M*/new Bumper(480, 440 ,40,10),
+         							/*L*/new Bumper(510, 375,80,10, true), /*J*/new Bumper(430,290,40,10,true),/*F*/new Bumper(410,160,40,5,true),/*H*/new Bumper(450,230,50,10,true),
+         							/*G*/new Bumper(530,125,300,20),/*I*/new Bumper(600,230,60,15),/*K*/new SpeedBumper(640,320,60,10,-5,0), /*U*/new SpeedBumper(700,600,300,20,0,-20), /*X*/new SpeedBumper(100,575,200,20,0,-20),
+         							/*Y*/new SpeedBumper(450,675,200,10,0,-15)};
+      //public Bumper[] level2={new Bumper(100,300,400,25),new Bumper (125,325,350,25)};
       public Bumper[] level3={new Bumper(250,200,100,150),new Bumper(50,300,150,10),new Bumper(400,300,150,10)};
       public Bumper[] level4={new Bumper(100,150,100,10,true),new Bumper(400,150,100,10,true),new Bumper(250,200,100,5,true), new Bumper(50,300,75,5,true), new Bumper(475,300,75,5,true),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
       public Bumper[] bump=level1;   
@@ -146,9 +152,24 @@
                if (p[k]!=null)
                   p[k].update();
             }
+            Bumper on;
+            SpeedBumper sOn;
             for (int k = 0; k< p.length; k++){
                if (p[k]!=null)
                   p[k].gravity();
+               if (p[k]!=null)
+               {
+                  if(p[k].onBumper())
+                  {
+                     on = p[k].onWhatBumper();
+                     if(on instanceof SpeedBumper)
+                     {
+                        sOn = (SpeedBumper)on;
+                        p[k].dx+=sOn.getXVelocity();
+                        p[k].dy+=sOn.getYVelocity();
+                     }
+                  }
+               }
             }
             for (int k = 0; k< p.length; k++)
                for (int n = k+1; n<p.length;n++)
@@ -182,36 +203,40 @@
                p[k].draw(myBuffer);
          }
          for (int k=0;k<bump.length;k++)
+         {
             bump[k].draw(myBuffer,xScale,yScale);
+            myBuffer.setColor(Color.green);
+            myBuffer.drawString(k+"",(int)(bump[k].getX()*xScale),(int)(bump[k].getY()*yScale)-2);
+         }
          if(running==1){
-	   drawScore(0,WIDTH-30,30);
-	   drawScore(1,30,30);
-	   String temp;
-	   if (TOTALPLAYERS>=3){
-             drawScore(2,30, HEIGHT-30);
-	       if (TOTALPLAYERS>=4){
-             	drawScore(3,WIDTH-30,HEIGHT-30);
-	       	if(TOTALPLAYERS>=5){
-		 drawScore(4,WIDTH/2-30,30);
-		 if(TOTALPLAYERS>=6){
-                  drawScore(5,WIDTH/2-30,HEIGHT-30);
-		 }
-		}
-	       }
-	   }
-	 }
+            drawScore(0,WIDTH-30,30);
+            drawScore(1,30,30);
+            String temp;
+            if (TOTALPLAYERS>=3){
+               drawScore(2,30, HEIGHT-30);
+               if (TOTALPLAYERS>=4){
+                  drawScore(3,WIDTH-30,HEIGHT-30);
+                  if(TOTALPLAYERS>=5){
+                     drawScore(4,WIDTH/2-30,30);
+                     if(TOTALPLAYERS>=6){
+                        drawScore(5,WIDTH/2-30,HEIGHT-30);
+                     }
+                  }
+               }
+            }
+         }
          repaint();
       }
        private void drawScore(int player,int xpos, int ypos){
-	   if(lives[player]<=0)
-		   return;
-	   myBuffer.setFont(new Font("Serif",Font.PLAIN,(int)(20*yScale)));
-	   myBuffer.setColor(PCOLOR[player]);
-	   myBuffer.fillOval((int)(xpos*xScale-(30*xScale*((double)(lives[player])/TOTALLIVES))/2),(int)(ypos*yScale-(30*yScale*((double)(lives[player])/TOTALLIVES))/2),(int)(30*xScale*((double)(lives[player])/TOTALLIVES)),(int)(30*yScale*((double)(lives[player])/TOTALLIVES)));
-           myBuffer.setColor(new Color(255-PCOLOR[player].getRed(),255-PCOLOR[player].getGreen(),255-PCOLOR[player].getBlue()));
-	   myBuffer.drawString(lives[player]+"",(int)((xpos-5)*xScale),(int)((ypos+10)*yScale));
-
-	}
+         if(lives[player]<=0)
+            return;
+         myBuffer.setFont(new Font("Serif",Font.PLAIN,(int)(20*yScale)));
+         myBuffer.setColor(PCOLOR[player]);
+         myBuffer.fillOval((int)(xpos*xScale-(30*xScale*((double)(lives[player])/TOTALLIVES))/2),(int)(ypos*yScale-(30*yScale*((double)(lives[player])/TOTALLIVES))/2),(int)(30*xScale*((double)(lives[player])/TOTALLIVES)),(int)(30*yScale*((double)(lives[player])/TOTALLIVES)));
+         myBuffer.setColor(new Color(255-PCOLOR[player].getRed(),255-PCOLOR[player].getGreen(),255-PCOLOR[player].getBlue()));
+         myBuffer.drawString(lives[player]+"",(int)((xpos-5)*xScale),(int)((ypos+10)*yScale));
+      
+      }
        public void gameOver(int player){
          t.stop();
          running = 0;
