@@ -6,7 +6,8 @@
    import javazoom.jl.player.*; 
    import java.io.InputStream;
    import java.io.FileInputStream;
-    public class GWar extends JPanel{
+public class GWar extends JPanel{
+	public static final boolean DEBUG=false;
       private static final int RADIUS = 25; 
       public static final int WIDTH = 600;
       public static final int HEIGHT = 400;
@@ -206,8 +207,10 @@
          for (int k=0;k<bump.length;k++)
          {
             bump[k].draw(myBuffer,xScale,yScale);
-            myBuffer.setColor(Color.green);
-            myBuffer.drawString(k+"",(int)(bump[k].getX()*xScale),(int)(bump[k].getY()*yScale)-2);
+            if(DEBUG){
+		myBuffer.setColor(Color.green);
+            	myBuffer.drawString(k+"",(int)(bump[k].getX()*xScale),(int)(bump[k].getY()*yScale)-2);
+	    }
          }
          if(running==1){
             drawScore(0,WIDTH-30,30);
