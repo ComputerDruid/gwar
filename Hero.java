@@ -5,7 +5,7 @@
       public double dy,dx;
       private double SPEED = 3;
       private GWar world;
-      private int jumps=0;
+      int jumps=0;
       private int sparkindex=0;
       private int sparkcounter=0;
       private int tiedcount=0;
@@ -46,13 +46,7 @@
             sparkcounter=0;
             addsparkle();
          }
-         if(tiedcount==0){
-            if(lacceleration&&dx>-SPEED)
-               dx -= 1;
-            if(racceleration&&dx<SPEED)
-               dx += 1;
-         }
-         if (onbumper){
+	if (onbumper){
             //System.out.println("onbumper");
             if (racceleration==lacceleration){
                if(tiedcount==0) 
@@ -66,6 +60,12 @@
             
             if (Math.abs(dx) < .05)
                dx=0; 
+         }
+         if(tiedcount==0){
+            if(lacceleration&&dx>-SPEED)
+               dx -= 1;
+            if(racceleration&&dx<SPEED)
+               dx += 1;
          }
          if (checkVBumper()){
             dy = Math.abs(dy);
