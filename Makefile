@@ -1,7 +1,25 @@
-all: build/GWar.class
-build/GWar.class: 
-	javac -d build -cp build *.java
-run: build/GWar.class
+JFLAGS = -g -d build -cp build
+JC = javac
+.SUFFIXES: .java .class
+.java.class:
+	        $(JC) $(JFLAGS) $*.java
+
+CLASSES = \
+	GWar.java \
+	Hero.java \
+	Bumper.java \
+	SpeedBumper.java \
+	Item.java
+
+default: classes
+
+classes: $(CLASSES:.java=.class)
+
+init:
+	$(JC) $(JFLAGS) *.java
+
+run: 
 	cd build; java GWar
+
 clean:
-	rm -v build/*.class
+	$(RM) build/*.class
