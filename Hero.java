@@ -196,12 +196,19 @@
             }
       }
        public void fastFall(){
-         if(tiedcount==0)
-            if ((dy <10)&&(jumps<2)){
+         if(tiedcount==0){
+		 if (onBumper()){
+			if (onWhatBumper().passthrough){
+				y++;
+				dy=10;
+			}
+		}
+		 else if ((dy <10)&&(jumps<2)){
                dy=10;
                jumps++;	
                dx=0;
             }
+	}
       }
        public void gravity(){
          if(!onBumper())
