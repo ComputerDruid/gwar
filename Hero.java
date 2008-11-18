@@ -95,7 +95,7 @@
                   tdistance=distance(this, world.bump[k].getX()+world.bump[k].getWidth(),world.bump[k].getY());
                }
             }
-            if(goal.getX()>x){
+	    if(goal.getX()>x){
                racceleration=true;
                lacceleration=false;
                if(goal.getY()>y)
@@ -113,6 +113,9 @@
             Hero target = findTarget();
             if (target ==null) 
                return;
+	    if((Math.abs(target.x-x)<r)&&(y<target.y)){
+		    fastFall();
+		}
             if (target.x<x){
                lacceleration=true;
                racceleration=false;
