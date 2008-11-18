@@ -7,7 +7,7 @@
    import java.io.InputStream;
    import java.io.FileInputStream;
 public class GWar extends JPanel{
-	public static final boolean DEBUG=false;
+	public static boolean DEBUG=false;
       private static final int RADIUS = 25; 
       public static final int WIDTH = 600;
       public static final int HEIGHT = 400;
@@ -788,6 +788,10 @@ public class GWar extends JPanel{
          g.drawImage(myImage, 0, 0, getWidth(), getHeight(), null);
       } 
        public static void main(String[] args){
+	       for (int k = 0;k<args.length;k++){
+		       if (args[k].equals("-d")||args[k].equals("--debug"))
+			       DEBUG=true;
+		}
          GWar game = new GWar();
       }
        public void setupFrame(){
