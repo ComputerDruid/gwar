@@ -23,18 +23,14 @@ public class GWar extends JPanel{
       public Hero[] p = new Hero[TOTALPLAYERS];
       private int[] lives = new int[TOTALPLAYERS];
       private int numalive = TOTALPLAYERS;  
-      public Bumper[] level1={new Bumper(100,300,400,15),new Bumper(150,250,100,5,true),new Bumper(350,250,100,5,true), new Bumper(250,200,100,5,true)};
-      public Bumper[] level2={new Bumper(100,300,400,25),new Bumper (125,325,350,25)};
-      //public Bumper[] level2={/*A*/new Bumper(200,175,100,10), /*B*/new Bumper(150,250,100,10),/*C*/ new Bumper(225,325,60,10,true), /*D*/new Bumper(75, 400, 300, 15,true),
+      //public Bumper[] level5={/*A*/new Bumper(200,175,100,10), /*B*/new Bumper(150,250,100,10),/*C*/ new Bumper(225,325,60,10,true), /*D*/new Bumper(75, 400, 300, 15,true),
 //         							/*V*/new Bumper(350,325,30,10),/*E*/new Bumper(350,75,20,175),/*N*/ new Bumper(400,500,50,15), /*M*/new Bumper(480, 440 ,40,10),
 //         							/*L*/new Bumper(510, 375,80,10, true), /*J*/new Bumper(430,290,40,10,true),/*F*/new Bumper(410,160,40,5,true),/*H*/new Bumper(450,230,50,10,true),
 //         							/*G*/new Bumper(530,125,300,20),/*I*/new Bumper(600,230,60,15),/*K*/new SpeedBumper(640,320,60,10,-5,0), /*U*/new SpeedBumper(700,600,300,20,0,-20), /*X*/new SpeedBumper(100,575,200,20,0,-20),
 //         							/*Y*/new SpeedBumper(450,675,200,10,0,-15)};
 								
-      //public Bumper[] level2={new Bumper(100,300,400,25),new Bumper (125,325,350,25)};
-      public Bumper[] level3={new Bumper(250,200,100,150),new Bumper(50,300,150,10),new Bumper(400,300,150,10)};
-      public Bumper[] level4={new SpeedBumper(100,150,100,10,3,0,true),new SpeedBumper(400,150,100,10,-3,0,true),new Bumper(250,200,100,5,true), new SpeedBumper(50,300,75,5,0,-15), new SpeedBumper(475,300,75,5,0,-15),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
-      public Bumper[] bump=level1;   
+      //public Bumper[] level4={new SpeedBumper(100,150,100,10,3,0,true),new SpeedBumper(400,150,100,10,-3,0,true),new Bumper(250,200,100,5,true), new SpeedBumper(50,300,75,5,0,-15), new SpeedBumper(475,300,75,5,0,-15),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
+      public Bumper[] bump;
       public boolean[] isAI = new boolean[]{true, true, false};    
       public KListener kl = new KListener();
       private int running = 2; //0-Stopped 1-Running 2-Menu 3-Paused
@@ -63,6 +59,7 @@ public class GWar extends JPanel{
          setFocusable(true);
          addKeyListener(kl);
         //newGame();
+	 readLevel("level1.gwar");   
          playMusic(music);
          t.start();
          mm.show();
@@ -85,6 +82,43 @@ public class GWar extends JPanel{
                System.out.println("Music failed to play");
             }
       }
+      public void readLevel(String file){
+	  System.out.println(file);
+	  try{
+		  java.io.BufferedReader f = new java.io.BufferedReader(new java.io.FileReader(file));
+		  int size = Integer.parseInt(f.readLine());
+		  bump = new Bumper[size];
+		  for(int k = 0; k<size;k++){
+			  java.util.StringTokenizer st = new java.util.StringTokenizer(f.readLine());
+			  int blocktype=Integer.parseInt(st.nextToken());
+			  if(blocktype==0)
+			  	bump[k]= new Bumper(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),st.nextToken().equalsIgnoreCase("true"));
+			  else if(blocktype==1)
+			  	bump[k]= new SpeedBumper(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),st.nextToken().equalsIgnoreCase("true"));
+
+		  }
+		  /*size = Integer.parseInt(f.readLine());
+		  e = new LinkedList<Enemy>();
+		  for(int k = 0; k < size; k++){
+			  java.util.StringTokenizer st = new java.util.StringTokenizer(f.readLine());
+			  Double tempx = Double.parseDouble(st.nextToken());
+			  Double tempy = Double.parseDouble(st.nextToken());
+			  boolean type = st.nextToken().equalsIgnoreCase("true");
+			  java.awt.Color tempcolor;
+			  if(type)
+				  tempcolor=java.awt.Color.red;
+			  else
+				  tempcolor=java.awt.Color.blue;
+			  e.add(new Enemy(tempx,tempy,10,this,tempcolor,1,type));
+		  }*/
+	  }
+	  catch(java.io.FileNotFoundException ex){
+		  System.out.println("Level file not found");
+	  }
+	  catch(java.io.IOException ex){
+		  System.out.println("Problem reading file");
+	  }
+  }
        public void stopMusic(){
          if(player!=null)
             player.close();
@@ -429,13 +463,13 @@ public class GWar extends JPanel{
       // 	}
           void newGameCurrentSettings(){
             if(LevelSel==1)
-               bump=level1;
+		    readLevel("level1.gwar");
             else if(LevelSel==2)
-               bump=level2;
+		    readLevel("level2.gwar");
             else if(LevelSel==3)
-               bump=level3;
+		    readLevel("level3.gwar");
 	    else
-		    bump=level4;
+		    readLevel("level4.gwar");
             if(numPlayers+numAI>=2)
                newGame(HPSel,numPlayers,numAI);
          }
@@ -551,13 +585,13 @@ public class GWar extends JPanel{
 			  LevelSel=1;
 		  }
                   if(LevelSel==1)
-                     bump=level1;
+			  readLevel("level1.gwar");
                   else if(LevelSel==2)
-                     bump=level2;
+			readLevel("level2.gwar");
                   else if(LevelSel==3)
-                     bump=level3;
+			  readLevel("level3.gwar");
                   else
-                     bump=level4;
+			  readLevel("level4.gwar");
                   drawB();
                }
                else if (selected==5){
