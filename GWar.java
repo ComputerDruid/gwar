@@ -33,7 +33,7 @@ public class GWar extends JPanel{
 								
       //public Bumper[] level2={new Bumper(100,300,400,25),new Bumper (125,325,350,25)};
       public Bumper[] level3={new Bumper(250,200,100,150),new Bumper(50,300,150,10),new Bumper(400,300,150,10)};
-      public Bumper[] level4={new Bumper(100,150,100,10,true),new Bumper(400,150,100,10,true),new Bumper(250,200,100,5,true), new SpeedBumper(50,300,75,5,0,-15), new SpeedBumper(475,300,75,5,0,-15),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
+      public Bumper[] level4={new SpeedBumper(100,150,100,10,3,0,true),new SpeedBumper(400,150,100,10,-3,0,true),new Bumper(250,200,100,5,true), new SpeedBumper(50,300,75,5,0,-15), new SpeedBumper(475,300,75,5,0,-15),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
       public Bumper[] bump=level1;   
       public boolean[] isAI = new boolean[]{true, true, false};    
       public KListener kl = new KListener();
