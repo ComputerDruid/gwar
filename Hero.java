@@ -1,7 +1,7 @@
 	import javax.swing.*;
 	import java.awt.*;
 	 class Hero	extends Item{
-	 	public static final int NONE = 0, BORDER = 1, BUMPER = 2;
+		public static final int	NONE = 0, BORDER = 1, BUMPER = 2;
 		public double dy,dx;
 		private double	SPEED	= 3;
 		private GWar world;
@@ -79,10 +79,10 @@
 			x += dx;
 			onbumper=onBumper();
 		}
-		 public int	nearestBorder(Hero h){
-			int wL =	h.x,wR =	world.WIDTH-h.x;
-			int hT =	h.y,hB =	world.HEIGHT-h.y;
-			int min=wL;
+		 public double	nearestBorder(Hero h){
+			double wL =	h.x,wR =	world.WIDTH-h.x;
+			double hT =	h.y,hB =	world.HEIGHT-h.y;
+			double min=wL;
 			if(wR	< min)
 			{
 				min =	wR;
@@ -98,7 +98,7 @@
 			return min;
 		}
 		public int getBorderValue(Hero h){
-			int minDist	= nearestBorder(h);
+			double minDist	= nearestBorder(h);
 			if(minDist<50)
 			{
 				return -10;
@@ -113,11 +113,11 @@
 			}
 		}
 		public int getBumperValue(Hero h){
-			if(onBumper(h))
+			if(h.onBumper())
 			{
 				return 10;
 			}
-			else if(overBumper(h))
+			else if(h.overBumper())
 			{
 				return 5;
 			}
@@ -130,10 +130,11 @@
 			int val = 0;
 			val+=getBorderValue(h);
 			val+=getBumperValue(h);
+			return val;
 		}	
-		public int getProblem(Hero h){
-			int bord = getBorderValue(h);
-			int bump = getBumperValue(h);
+		public int getProblem(Hero	h){
+			int bord	= getBorderValue(h);
+			int bump	= getBumperValue(h);
 			if(bump<0)
 			{
 				return BUMPER;
@@ -142,15 +143,15 @@
 			{
 				return BORDER;
 			}
-			
+			return NONE;
 		}
-		public void fixBorder(){
+		public void	fixBorder(){
 		}
-		public void fixBumper(){
+		public void	fixBumper(){
 		}
 		 public void nickAI(){
 			int position =	getPositionValue(this);
-			int problem = getProblem(this);
+			int problem	= getProblem(this);
 			if(problem == BORDER)
 			{
 				fixBorder();
