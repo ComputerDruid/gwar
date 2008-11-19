@@ -8,6 +8,7 @@ class Item
 	java.awt.Color c;
 	public Item(double x, double y, int r, java.awt.Color c)
 	{
+		//probably shouldn't be using shadowing
 		this.x=x;
 		this.y=y;
 		this.lX = x;
