@@ -266,7 +266,6 @@ public class GWar extends JPanel{
 		myBuffer.fillOval((int)(xpos*xScale-(30*xScale*((double)(lives[player])/TOTALLIVES))/2),(int)(ypos*yScale-(30*yScale*((double)(lives[player])/TOTALLIVES))/2),(int)(30*xScale*((double)(lives[player])/TOTALLIVES)),(int)(30*yScale*((double)(lives[player])/TOTALLIVES)));
 		myBuffer.setColor(new Color(255-PCOLOR[player].getRed(),255-PCOLOR[player].getGreen(),255-PCOLOR[player].getBlue()));
 		myBuffer.drawString(lives[player]+"",(int)((xpos-5)*xScale),(int)((ypos+10)*yScale));
-
 	}
 	public void gameOver(int player){
 		t.stop();
@@ -294,6 +293,7 @@ public class GWar extends JPanel{
 		//BufferedImage menubuffer = myImage;//new BufferedImage (WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
 		//Graphics myBuffer = menubuffer.createGraphics();
 		int selected=0;
+		int menustatus=0;//0-main 1-help 2-alt
 		int numPlayers=1;
 		int[] pNumPlayers = {1,2,3};
 		int HPSel=5;
@@ -301,14 +301,14 @@ public class GWar extends JPanel{
 		int PelletSizeSel=5;
 		int LevelSel=1;
 		int numAI=1;
-		final int ListSize=9;
+		final int ListSize=7;
+		final int AltListSize=4;
 		final int spacebetweenlines = 25; 
 		final int xoffset = 30;
 		final int yoffset = 120;
 		final int tabspace = 85;
 		//final String[] menuTitles new String[]{"Start", "# Human Players:", "# AI Players:", "Lives:", "Level:", "Toggle Fullscreen Mode (experimental)", "Help", "Exit"};
 		//final String[][] menuChoices = {{},{"0","1","2","3"},{"0","1","2","3"},{"1","2","3","4","5"},{"Battlefield","FD","new"},{},{}};
-		boolean helpshowing = false;
 		Image helpscreen;
 		//Image background;
 		MainMenu(){
@@ -330,22 +330,13 @@ public class GWar extends JPanel{
 		  }
 		  }*/
 		void drawB(){
-			if (helpshowing==true){
+			if (menustatus==1){
 				myBuffer.drawImage(helpscreen,0,0,(int)(WIDTH*xScale),(int)(HEIGHT*yScale),null);
 			}
-			else{
+			else if (menustatus==2){
 				int counter = 0;
-				myBuffer.setFont(new Font("SansSerif",Font.BOLD,(int)(75*yScale)));
-				myBuffer.setColor(new Color(0,255,255));
-				myBuffer.drawString("GWar!",(int)(xoffset*xScale),(int)((spacebetweenlines+60)*yScale));
-				myBuffer.setFont(new Font("SansSerif",Font.BOLD,(int)(15*yScale)));
-				/*myBuffer.setColor(Color.BLACK);
-				  myBuffer.fillRect(0,0,WIDTH,HEIGHT);*/
-				//myBuffer.drawImage(background,0,0,null);
 				setSelectedColor(counter,selected);
-				counter = 0;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Start",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				myBuffer.drawString("Back",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 1;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("# Human Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
@@ -383,7 +374,22 @@ public class GWar extends JPanel{
 				myBuffer.drawString("5",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(HPSel,10);
 				myBuffer.drawString("10",(int)(xScale*(tabspace*6+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 4;
+
+			}
+			else{
+				int counter = 0;
+				myBuffer.setFont(new Font("SansSerif",Font.BOLD,(int)(75*yScale)));
+				myBuffer.setColor(new Color(0,255,255));
+				myBuffer.drawString("GWar!",(int)(xoffset*xScale),(int)((spacebetweenlines+60)*yScale));
+				myBuffer.setFont(new Font("SansSerif",Font.BOLD,(int)(15*yScale)));
+				/*myBuffer.setColor(Color.BLACK);
+				  myBuffer.fillRect(0,0,WIDTH,HEIGHT);*/
+				//myBuffer.drawImage(background,0,0,null);
+				setSelectedColor(counter,selected);
+				counter = 0;
+				setSelectedColor(counter,selected);
+				myBuffer.drawString("Start",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				counter = 1;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Level:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(LevelSel,1);
@@ -394,20 +400,23 @@ public class GWar extends JPanel{
 				myBuffer.drawString("Overlook",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(LevelSel,4);
 				myBuffer.drawString("Islands",(int)(xScale*(tabspace*6+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 5;
+				counter = 2;
+				setSelectedColor(counter,selected);
+				myBuffer.drawString("Game Setup...",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				counter = 3;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Toggle Fullscreen Mode",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 6;
+				counter = 4;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Music:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(ismusic,true);
 				myBuffer.drawString("On",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(ismusic,false);
 				myBuffer.drawString("Off",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 7;
+				counter = 5;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Help",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 8;
+				counter = 6;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Exit",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(counter,-1);
@@ -437,23 +446,24 @@ public class GWar extends JPanel{
 		void moveUp(){
 			selected--;
 			if (selected < 0){
-				selected=ListSize-1;
+				if(menustatus==2)
+					selected=AltListSize-1;
+				else
+					selected=ListSize-1;
 			}
 			drawB();
 		}
 		void moveDown(){
 			selected++;
-			if (selected >= ListSize){
+			if(menustatus==2){
+				if (selected >= AltListSize)
+					selected=0;
+			}
+			else if (selected >= ListSize){
 				selected=0;
 			}
 			drawB();
 		}
-		// void moveRight(){
-		// 	
-		// 	}
-		// 	void moveLeft(){
-		// 	
-		// 	}
 		void newGameCurrentSettings(){
 			if(LevelSel==1)
 				readLevel("level1.gwar");
@@ -467,18 +477,14 @@ public class GWar extends JPanel{
 				newGame(HPSel,numPlayers,numAI);
 		}
 		void enter(){
-			if (helpshowing==true){
-				helpshowing=false;
+			if (menustatus==1){
+				menustatus=0;
 			}
-			else{
-				if (selected==0){
-
-					// NGWin.setLocationRelativeTo(null);
-					// NGWin.setVisible(true);
-					// while (NGWin.getDone()!=true){
-					// }
-					newGameCurrentSettings();
-
+			else if (menustatus==2){
+				if(selected==0){
+					menustatus=0;
+					selected=2;
+					drawB();
 				}
 				else if (selected==1){
 					if (numPlayers==0){
@@ -495,39 +501,6 @@ public class GWar extends JPanel{
 					}
 					drawB();
 				}
-				/*else if (selected==2){
-				  if (p2selected==1){
-				  p2selected=2;
-				  }
-				  else{
-				  p2selected=1;
-				  }
-				  drawB();
-				}
-				else if (selected==3){
-				if (p3selected==1){
-				p3selected=0;
-				}
-				//else if (p3selected==2){
-				//p3selected=1;
-				//}
-				else{
-				p3selected=1;
-				}
-				drawB();
-				}
-				else if (selected==4){
-				if (p4selected==1){
-				p4selected=0;
-				}
-				//else if (p4selected==2){
-				//p4selected=1;
-				//}
-				else{
-				p4selected=1;
-				}
-				drawB();
-				}*/
 				else if (selected==2){
 					if (numAI==0){
 						numAI=1;
@@ -564,7 +537,18 @@ public class GWar extends JPanel{
 					}
 					drawB();
 				}
-				else if (selected==4){
+			}
+			else{
+				if (selected==0){
+
+					// NGWin.setLocationRelativeTo(null);
+					// NGWin.setVisible(true);
+					// while (NGWin.getDone()!=true){
+					// }
+					newGameCurrentSettings();
+
+				}
+				else if (selected==1){
 					if (LevelSel==1){
 						LevelSel=2;
 					}
@@ -587,10 +571,15 @@ public class GWar extends JPanel{
 						readLevel("level4.gwar");
 					drawB();
 				}
-				else if (selected==5){
+				else if (selected==2){
+					menustatus=2;
+					selected=0;
+					drawB();
+				}
+				else if (selected==3){
 					toggleFullscreen();
 				}
-				else if (selected==6){
+				else if (selected==4){
 					ismusic=!ismusic;
 					if(!ismusic)
 						stopMusic();
@@ -598,10 +587,11 @@ public class GWar extends JPanel{
 					//playMusic(music);
 					drawB();
 				}
-				else if (selected==7){
-					helpshowing=true;
+				else if (selected==5){
+					menustatus=1;
+					drawB();
 				}
-				else if (selected==8){
+				else if (selected==6){
 					/*gametimer.stop();
 					  window.setVisible(false);
 					//window.close();
