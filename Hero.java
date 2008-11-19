@@ -103,7 +103,11 @@
 			{
 				return -10;
 			}
-			else if(minDist<100)
+			else if(minDist<80)
+			{
+				return -5;
+			}
+			else if(minDist < 140)
 			{
 				return 5;
 			}
