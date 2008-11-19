@@ -402,7 +402,7 @@ public class GWar extends JPanel{
 				myBuffer.drawString("Islands",(int)(xScale*(tabspace*6+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 2;
 				setSelectedColor(counter,selected);
-				myBuffer.drawString("Game Setup...",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				myBuffer.drawString("Game Setup... (Human: "+numPlayers+", AI: "+numAI+", Lives:"+HPSel+")",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 3;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Toggle Fullscreen Mode",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
