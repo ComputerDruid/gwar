@@ -108,7 +108,12 @@ public class GWar extends JPanel{
 			  }*/
 		}
 		catch(java.io.FileNotFoundException ex){
+			System.out.println("Having been erased,");
+			System.out.println("The document you're seeking");
+			System.out.println("Must now be retyped.");
+			System.out.println();
 			System.out.println("Level file not found");
+			System.exit(1);
 		}
 		catch(java.io.IOException ex){
 			System.out.println("Problem reading file");
