@@ -161,7 +161,7 @@
 		 public void fixBorderProblem(){
 			if(actionValue	==	-1)
 			{
-				actionValue	= nearestTargetBumper(world.WIDTH/2,world.HEIGHT/2,h);
+				actionValue	= nearestTargetBumper(world.WIDTH/2,world.HEIGHT/2,this);
 			}
 			else
 			{
@@ -220,10 +220,12 @@
 		 public int	nearestTargetBumper(double	tx,double ty, Hero h){
 			double mDist =	999999999,dist1,dist2,distTot;
 			int min=-1;
+			Bumper b;
 			for(int k =0; k <	world.bump.length;k++)
 			{
-				dist1	= distance(h,k.x,k.y)*.75;
-				dist2	= distance(tx,ty,k.x,k.y);
+				b = world.bump[k];
+				dist1	= distance(h,b.x+b.width/2,b.y+b.height/2)*.75;
+				dist2	= distance(tx,ty,b.x+b.width/2,b.y+b.height/2);
 				distTot = dist1+dist2;
 				if(distTot<mDist)
 				{
