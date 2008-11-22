@@ -146,19 +146,10 @@ public class GWar extends JPanel{
 		for (k =humanPlayers;k<humanPlayers+numAI;k++)
 			typeAI[k]=1;
 		for (;k<humanPlayers+numAI+numNick;k++){
-			System.out.println("k="+k);
 			typeAI[k]=2;
 		}
 
 		newGame();
-	}
-	public void newBackgroundGame(){
-		newGame(5,0,2,0);
-		running = 2;
-	}
-	public void newBackgroundGame(int n){
-		newGame(5,0,n,0);
-		running = 2;
 	}
 	public void newBackgroundGame(int n, int nick){
 		newGame(5,0,n,nick);
@@ -341,7 +332,7 @@ public class GWar extends JPanel{
 			drawB();
 		}
 		void show(){
-			newBackgroundGame(numPlayers+numAI);
+			newBackgroundGame(numPlayers+numAI,numNick);
 			running=2;
 		}
 		/*void draw(Graphics g){
@@ -379,55 +370,29 @@ public class GWar extends JPanel{
 				}
 				counter = 1;
 				setSelectedColor(counter,selected);
-				myBuffer.drawString("# Human Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(numPlayers,0);
-				setSelectedColor(0,0);
-				myBuffer.drawString(numPlayers+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				/*setSelectedColor(numPlayers,1);
-				myBuffer.drawString("1",(int)(xScale*(tabspace*3+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(numPlayers,2);
-				myBuffer.drawString("2",(int)(xScale*(tabspace*4+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(numPlayers,3);
-				myBuffer.drawString("3",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				*/
+				myBuffer.drawString("Add Human Player",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				//setSelectedColor(numPlayers,0);
+				//setSelectedColor(0,0);
+				//myBuffer.drawString(numPlayers+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 2;
 				setSelectedColor(counter,selected);
-				myBuffer.drawString("# AI Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(numAI,0);
-				setSelectedColor(0,0);
-				myBuffer.drawString(numAI+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				myBuffer.drawString("Add AI Player",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				//setSelectedColor(numAI,0);
+				//setSelectedColor(0,0);
+				//myBuffer.drawString(numAI+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 3;
 				setSelectedColor(counter,selected);
-				myBuffer.drawString("# NickAI Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(numAI,0);
-				setSelectedColor(0,0);
-				myBuffer.drawString(numNick+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				/*
-				setSelectedColor(numAI,1);
-				myBuffer.drawString("1",(int)(xScale*(tabspace*3+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(numAI,2);
-				myBuffer.drawString("2",(int)(xScale*(tabspace*4+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(numAI,3);
-				myBuffer.drawString("3",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				*/
+				myBuffer.drawString("Add NickAI Player",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				//setSelectedColor(numAI,0);
+				//setSelectedColor(0,0);
+				//myBuffer.drawString(numNick+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				
 				counter = 4;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Lives:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(HPSel,1);
 				setSelectedColor(0,0);
 				myBuffer.drawString(HPSel+"",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				/*
-				setSelectedColor(HPSel,2);
-				myBuffer.drawString("2",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(HPSel,3);
-				myBuffer.drawString("3",(int)(xScale*(tabspace*3+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(HPSel,4);
-				myBuffer.drawString("4",(int)(xScale*(tabspace*4+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(HPSel,5);
-				myBuffer.drawString("5",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(HPSel,10);
-				myBuffer.drawString("10",(int)(xScale*(tabspace*6+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				*/
 
 			}
 			else{
@@ -544,14 +509,8 @@ public class GWar extends JPanel{
 					}
 				}
 				else if (selected==1){
-					if (numPlayers==0){
-						numPlayers=1;
-					}
-					else if (numPlayers==1){
-						numPlayers=2;
-					}
-					else if (numPlayers==2){
-						numPlayers=3;
+					if (numPlayers+numAI+numNick<6){
+						numPlayers++;
 					}
 					else{
 						numPlayers=0;
@@ -559,31 +518,19 @@ public class GWar extends JPanel{
 					drawB();
 				}
 				else if (selected==2){
-					if (numAI==0){
-						numAI=1;
+					if (numPlayers+numAI+numNick<6){
+						numAI++;
 					}
-					else if (numAI==1){
-						numAI=2;
-					}
-					else if (numAI==2){
-						numAI=3;
-					}
-					else if (numAI==3){
+					else{
 						numAI=0;
 					}
 					drawB();
 				}
 				else if (selected==3){
-					if (numNick==0){
-						numNick=1;
+					if (numPlayers+numAI+numNick<6){
+						numNick++;
 					}
-					else if (numNick==1){
-						numNick=2;
-					}
-					else if (numNick==2){
-						numNick=3;
-					}
-					else if (numNick==3){
+					else{
 						numNick=0;
 					}
 					drawB();
