@@ -28,6 +28,8 @@
 			world=tp;
 			this.mass =mass;
 			SPEED=(3/mass);
+			actionType = NONE;
+			actionValue = -1;
 		}
 		 private	void addsparkle(){
 			for (int	k = xspark.length-1;k>0;k--){
@@ -100,15 +102,15 @@
 		}
 		 public int	getBorderValue(Hero h){
 			double minDist	= nearestBorder(h);
-			if(minDist<50)
+			if(minDist<60)
 			{
 				return -10;
 			}
-			else if(minDist<80)
+			else if(minDist<100)
 			{
 				return -5;
 			}
-			else if(minDist <	140)
+			else if(minDist <	150)
 			{
 				return 5;
 			}
@@ -140,13 +142,13 @@
 		 public int	getProblem(Hero	h){
 			int bord	= getBorderValue(h);
 			int bump	= getBumperValue(h);
-			if(bump<0)
-			{
-				return BUMPER;
-			}
 			if(bord<0)
 			{
 				return BORDER;
+			}
+			if(bump<0)
+			{
+				return BUMPER;
 			}
 			return NONE;
 		}
@@ -165,12 +167,20 @@
 			}
 			else
 			{
-				Bumper tar = world.bump[actionValue];
-				goToTarget(tar);
-				Bumper on =	onWhatBumper();
-				if(on.x == tar.x && on.y == tar.y)
+				try
 				{
-					 actionType	= NONE;
+					Bumper tar = world.bump[actionValue];
+					goToTarget(tar);
+					Bumper on =	onWhatBumper();
+					if(on!=null && on.x == tar.x && on.y == tar.y)
+					{
+							stop();
+							actionType	= NONE;
+					}
+				}
+				catch(ArrayIndexOutOfBoundsException e)
+				{
+					System.out.println("Wrong index!");
 				}
 			}
 		}
@@ -187,7 +197,27 @@
 				lacceleration = true;
 				racceleration = false;
 			}
-			if(b.y <	y && dy < 0)
+			if(dx>9&&world.WIDTH-x<100)
+			{
+				attackLeft();
+			}
+			else if(dx>6&&world.WIDTH-x<50)
+			{
+				attackLeft();
+			}
+			if(dx<-9&&x<100)
+			{
+				attackRight();
+			}
+			else if(dx<-6&&x<50)
+			{
+				attackRight();
+			}
+			if(dy<-10&&overBumper()&&world.HEIGHT-y<50)
+			{
+				fastFall();
+			}
+			if(b.y <	y && dy >= 0)
 			{
 				jump();
 			}
@@ -195,6 +225,7 @@
 		 public void nickAI(){
 			int position =	getPositionValue(this);
 			int problem	= NONE;
+			
 			if(actionType == NONE)
 			{
 				problem = getProblem(this);
@@ -209,13 +240,29 @@
 			}
 			else if(problem == BUMPER)
 			{
-				fixBumper();
+			//	fixBumper();
 			}
 			/*if(position < lastPositionValue)
 			{
 				reverseLastAction();
 			}*/
 			lastPositionValue	= position;
+		}
+		public double getMaxXDist(double tx, double ty, Hero h){
+			int lJumps = 2-jumps;
+			if(lJumps==2)
+			{
+				return 170;
+			}
+			else if(lJumps==1)
+			{
+				return 90;
+			}
+			else if(lJumps==0)
+			{
+				return 50;
+			}
+			return 0;
 		}
 		 public int	nearestTargetBumper(double	tx,double ty, Hero h){
 			double mDist =	999999999,dist1,dist2,distTot;
@@ -224,11 +271,25 @@
 			for(int k =0; k <	world.bump.length;k++)
 			{
 				b = world.bump[k];
-				dist1	= distance(h,b.x+b.width/2,b.y+b.height/2)*.75;
-				dist2	= distance(tx,ty,b.x+b.width/2,b.y+b.height/2);
+				dist1	= distance(h,b.x+b.width/2,b.y);
+				if(b.y - h.y < -110)
+				{
+					dist1*=5;
+				}
+				if(Math.abs(b.x+b.width/2-h.x)>getMaxXDist(b.x,b.y,h))
+				{
+					dist1*=5;
+				}
+				dist2	= distance(tx,ty,b.x+b.width/2,b.y)*1.5;
 				distTot = dist1+dist2;
+			/*	System.out.println("---- " + k+" ----");
+				System.out.println("Dif: "+(b.y-h.y));
+				System.out.println(dist1);
+				System.out.println(dist2);
+				System.out.println(distTot);*/
 				if(distTot<mDist)
 				{
+					mDist = distTot;
 					min =	k;
 				}
 			}
@@ -287,6 +348,11 @@
 					else
 						attackRight();
 			}
+		}
+		public void stop(){
+			dx=0;
+			racceleration = false;
+			lacceleration = false;
 		}
 		 private	Hero findTarget(){
 			Hero target	= null;
