@@ -150,6 +150,10 @@ public class GWar extends JPanel{
 		newGame(5,0,2);
 		running = 2;
 	}
+	public void newBackgroundGame(int n){
+		newGame(5,0,n);
+		running = 2;
+	}
 	public void respawn(int index){
 		if (index==0){
 			p[0] = new Hero (400,200,10,this,PCOLOR[index],1);
@@ -323,7 +327,7 @@ public class GWar extends JPanel{
 			drawB();
 		}
 		void show(){
-			newBackgroundGame();
+			newBackgroundGame(numPlayers+numAI);
 			running=2;
 		}
 		/*void draw(Graphics g){
@@ -426,7 +430,7 @@ public class GWar extends JPanel{
 				myBuffer.drawString("Islands",(int)(xScale*(tabspace*6+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 2;
 				setSelectedColor(counter,selected);
-				myBuffer.drawString("Game Setup... (Human: "+numPlayers+", AI: "+numAI+", Lives:"+HPSel+")",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				myBuffer.drawString("Game Setup ...     (Human: "+numPlayers+", AI: "+numAI+", Lives:"+HPSel+")",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 3;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Toggle Fullscreen Mode",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
@@ -508,6 +512,8 @@ public class GWar extends JPanel{
 				if(selected==0){
 					menustatus=0;
 					selected=2;
+					if(TOTALPLAYERS!=numPlayers+numAI)
+						newBackgroundGame(numPlayers+numAI);
 					drawB();
 				}
 				else if (selected==1){
