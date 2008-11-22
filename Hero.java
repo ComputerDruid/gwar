@@ -20,6 +20,7 @@
 		private int	yflash;
 		private boolean flashleft;
 		private int	flashcount = 0;
+		private int	lastPositionValue=-500,	actionType,	actionValue=-1;
 		 public Hero(double x, double	y,	int r,GWar tp,	java.awt.Color	c,double	mass){
 			super(x,y,r,c);
 			dy=0;
@@ -97,7 +98,7 @@
 			}
 			return min;
 		}
-		public int getBorderValue(Hero h){
+		 public int	getBorderValue(Hero h){
 			double minDist	= nearestBorder(h);
 			if(minDist<50)
 			{
@@ -107,7 +108,7 @@
 			{
 				return -5;
 			}
-			else if(minDist < 140)
+			else if(minDist <	140)
 			{
 				return 5;
 			}
@@ -116,7 +117,7 @@
 				return 10;
 			}
 		}
-		public int getBumperValue(Hero h){
+		 public int	getBumperValue(Hero h){
 			if(h.onBumper())
 			{
 				return 10;
@@ -136,7 +137,7 @@
 			val+=getBumperValue(h);
 			return val;
 		}	
-		public int getProblem(Hero	h){
+		 public int	getProblem(Hero	h){
 			int bord	= getBorderValue(h);
 			int bump	= getBumperValue(h);
 			if(bump<0)
@@ -149,13 +150,59 @@
 			}
 			return NONE;
 		}
-		public void	fixBorder(){
+		 public void	fixBorder(){
+			actionType = BORDER;
+			actionValue	= -1;
 		}
-		public void	fixBumper(){
+		 public void	fixBumper(){
+			actionType = BUMPER;
+			actionValue	= -1;
+		}
+		 public void fixBorderProblem(){
+			if(actionValue	==	-1)
+			{
+				actionValue	= nearestTargetBumper(world.WIDTH/2,world.HEIGHT/2,h);
+			}
+			else
+			{
+				Bumper tar = world.bump[actionValue];
+				goToTarget(tar);
+				Bumper on =	onWhatBumper();
+				if(on.x == tar.x && on.y == tar.y)
+				{
+					 actionType	= NONE;
+				}
+			}
+		}
+		 public void goToTarget(Bumper b)
+		{
+			double cX =	b.x +	b.width/2, dif	= cX-x;
+			if(dif >	3)
+			{
+				racceleration = true;
+				lacceleration = false;
+			}
+			else if(dif	< -3)
+			{
+				lacceleration = true;
+				racceleration = false;
+			}
+			if(b.y <	y && dy < 0)
+			{
+				jump();
+			}
 		}
 		 public void nickAI(){
 			int position =	getPositionValue(this);
-			int problem	= getProblem(this);
+			int problem	= NONE;
+			if(actionType == NONE)
+			{
+				problem = getProblem(this);
+			}
+			else if(actionType == BORDER)
+			{
+				fixBorderProblem();
+			}
 			if(problem == BORDER)
 			{
 				fixBorder();
@@ -164,6 +211,26 @@
 			{
 				fixBumper();
 			}
+			/*if(position < lastPositionValue)
+			{
+				reverseLastAction();
+			}*/
+			lastPositionValue	= position;
+		}
+		 public int	nearestTargetBumper(double	tx,double ty, Hero h){
+			double mDist =	999999999,dist1,dist2,distTot;
+			int min=-1;
+			for(int k =0; k <	world.bump.length;k++)
+			{
+				dist1	= distance(h,k.x,k.y)*.75;
+				dist2	= distance(tx,ty,k.x,k.y);
+				distTot = dist1+dist2;
+				if(distTot<mDist)
+				{
+					min =	k;
+				}
+			}
+			return min;
 		}
 		 public void ai(){
 			if(!overBumper()&&!onBumper()){
@@ -465,6 +532,9 @@
 		}
 		 public static	double distance(Item	i1, double x2,	double y2){
 			return Math.sqrt(Math.pow(i1.x-x2,2)+Math.pow(i1.y-y2,2));
+		}
+		 public static	double distance(double x1,	double y1, double	x2, double y2){
+			return Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2));
 		}
 		 public void draw(java.awt.Graphics	g){
 			super.draw(g,world.xScale,world.yScale);
