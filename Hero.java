@@ -197,35 +197,46 @@
 				lacceleration = true;
 				racceleration = false;
 			}
-			if(dx>9&&world.WIDTH-x<100)
+			if(b.y <	y && dy >= 0)
 			{
+				jump();
+			}
+		}
+		public void checkVelocityProblem()
+		{
+			if(dx>9)
+			{
+				if(onWhatBumper() instanceof SpeedBumper)
+				{
+					jump();
+				}
 				attackLeft();
 			}
 			else if(dx>6&&world.WIDTH-x<50)
 			{
 				attackLeft();
 			}
-			if(dx<-9&&x<100)
+			if(dx<-9)
 			{
+				if(onWhatBumper() instanceof SpeedBumper)
+				{
+					jump();
+				}
 				attackRight();
 			}
 			else if(dx<-6&&x<50)
 			{
 				attackRight();
 			}
-			if(dy<-10&&overBumper()&&world.HEIGHT-y<50)
+			if(dy<-8&&overBumper()&&world.HEIGHT-y<50)
 			{
 				fastFall();
-			}
-			if(b.y <	y && dy >= 0)
-			{
-				jump();
 			}
 		}
 		 public void nickAI(){
 			int position =	getPositionValue(this);
 			int problem	= NONE;
-			
+			checkVelocityProblem();
 			if(actionType == NONE)
 			{
 				problem = getProblem(this);
@@ -272,7 +283,7 @@
 			{
 				b = world.bump[k];
 				dist1	= distance(h,b.x+b.width/2,b.y);
-				if(b.y - h.y < -110)
+				if(b.y - h.y < -(2-jumps)*55)
 				{
 					dist1*=5;
 				}
