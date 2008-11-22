@@ -343,32 +343,50 @@ public class GWar extends JPanel{
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Back",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 1;
+				setSelectedColor(0,0);
+				int k=-1;
+				myBuffer.drawString("PlayerList:",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
+				for (k=0;k<numPlayers;k++){
+					myBuffer.setColor(PCOLOR[k]);
+					myBuffer.drawString("Human Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
+				}
+				for (;k<numPlayers+numAI;k++){
+					myBuffer.setColor(PCOLOR[k]);
+					myBuffer.drawString("AI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
+				}
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("# Human Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(numPlayers,0);
-				myBuffer.drawString("0",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(numPlayers,1);
+				setSelectedColor(0,0);
+				myBuffer.drawString(numPlayers+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				/*setSelectedColor(numPlayers,1);
 				myBuffer.drawString("1",(int)(xScale*(tabspace*3+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(numPlayers,2);
 				myBuffer.drawString("2",(int)(xScale*(tabspace*4+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(numPlayers,3);
 				myBuffer.drawString("3",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				*/
 				counter = 2;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("# AI Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(numAI,0);
-				myBuffer.drawString("0",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				setSelectedColor(0,0);
+				myBuffer.drawString(numAI+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				/*
 				setSelectedColor(numAI,1);
 				myBuffer.drawString("1",(int)(xScale*(tabspace*3+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(numAI,2);
 				myBuffer.drawString("2",(int)(xScale*(tabspace*4+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(numAI,3);
 				myBuffer.drawString("3",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				*/
 				counter = 3;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Lives:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(HPSel,1);
-				myBuffer.drawString("1",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				setSelectedColor(0,0);
+				myBuffer.drawString(HPSel+"",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				/*
 				setSelectedColor(HPSel,2);
 				myBuffer.drawString("2",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(HPSel,3);
@@ -379,6 +397,7 @@ public class GWar extends JPanel{
 				myBuffer.drawString("5",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(HPSel,10);
 				myBuffer.drawString("10",(int)(xScale*(tabspace*6+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				*/
 
 			}
 			else{
