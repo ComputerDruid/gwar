@@ -347,6 +347,8 @@ public class GWar extends JPanel{
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Back",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 1;
+				myBuffer.setColor(new Color(0.0f,0.0f,0.8f,0.3f));
+				myBuffer.fillRect((int)(xScale*(tabspace*4.75+xoffset)),50,150,300);
 				setSelectedColor(0,0);
 				int k=-1;
 				myBuffer.drawString("PlayerList:",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
