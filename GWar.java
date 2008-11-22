@@ -26,7 +26,7 @@ public class GWar extends JPanel{
 
 	//public Bumper[] level4={new SpeedBumper(100,150,100,10,3,0,true),new SpeedBumper(400,150,100,10,-3,0,true),new Bumper(250,200,100,5,true), new SpeedBumper(50,300,75,5,0,-15), new SpeedBumper(475,300,75,5,0,-15),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
 	public Bumper[] bump;
-	public boolean[] isAI = new boolean[]{true, true, false};    
+	public int[] typeAI = new int[]{1, 1, 0};    
 	public KListener kl = new KListener();
 	private int running = 2; //0-Stopped 1-Running 2-Menu 3-Paused
 	private boolean fullscreen = false;
@@ -138,20 +138,26 @@ public class GWar extends JPanel{
 		display();
 		t.start();
 	}
-	public void newGame(int lives,int humanPlayers, int numAI){
-		TOTALPLAYERS=humanPlayers+numAI;
+	public void newGame(int lives,int humanPlayers, int numAI, int numNick){
+		TOTALPLAYERS=humanPlayers+numAI+numNick;
 		TOTALLIVES=lives;
-		isAI = new boolean[TOTALPLAYERS];
-		for (int k =humanPlayers;k<humanPlayers+numAI;k++)
-			isAI[k]=true;
+		typeAI = new int[TOTALPLAYERS];
+		int k;
+		for (k =humanPlayers;k<humanPlayers+numAI;k++)
+			typeAI[k]=1;
+		for (;k<humanPlayers+numAI+numNick;k++){
+			System.out.println("k="+k);
+			typeAI[k]=2;
+		}
+
 		newGame();
 	}
 	public void newBackgroundGame(){
-		newGame(5,0,2);
+		newGame(5,0,2,0);
 		running = 2;
 	}
 	public void newBackgroundGame(int n){
-		newGame(5,0,n);
+		newGame(5,0,n,0);
 		running = 2;
 	}
 	public void respawn(int index){
@@ -220,9 +226,12 @@ public class GWar extends JPanel{
 			} 
 			kl.update();
 			for (int k = 0; k<TOTALPLAYERS; k++)
-				if(isAI[k])
-					if(p[k]!=null)
+				if(p[k]!=null){
+					if(typeAI[k]==1)
 						p[k].ai();
+					if(typeAI[k]==2)
+						p[k].nickAI();
+				}
 		}
 		if(running==1)
 			display();
@@ -310,8 +319,9 @@ public class GWar extends JPanel{
 		int PelletSizeSel=5;
 		int LevelSel=1;
 		int numAI=1;
+		int numNick=0;
 		final int ListSize=7;
-		final int AltListSize=4;
+		final int AltListSize=5;
 		final int spacebetweenlines = 25; 
 		final int xoffset = 30;
 		final int yoffset = 120;
@@ -360,6 +370,10 @@ public class GWar extends JPanel{
 					myBuffer.setColor(PCOLOR[k]);
 					myBuffer.drawString("AI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 				}
+				for (;k<numPlayers+numAI+numNick;k++){
+					myBuffer.setColor(PCOLOR[k]);
+					myBuffer.drawString("NickAI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
+				}
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("# Human Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(numPlayers,0);
@@ -378,6 +392,12 @@ public class GWar extends JPanel{
 				setSelectedColor(numAI,0);
 				setSelectedColor(0,0);
 				myBuffer.drawString(numAI+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				counter = 3;
+				setSelectedColor(counter,selected);
+				myBuffer.drawString("# NickAI Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				setSelectedColor(numAI,0);
+				setSelectedColor(0,0);
+				myBuffer.drawString(numNick+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				/*
 				setSelectedColor(numAI,1);
 				myBuffer.drawString("1",(int)(xScale*(tabspace*3+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
@@ -386,7 +406,7 @@ public class GWar extends JPanel{
 				setSelectedColor(numAI,3);
 				myBuffer.drawString("3",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				*/
-				counter = 3;
+				counter = 4;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Lives:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(HPSel,1);
@@ -503,8 +523,8 @@ public class GWar extends JPanel{
 				readLevel("level3.gwar");
 			else
 				readLevel("level4.gwar");
-			if(numPlayers+numAI>=2)
-				newGame(HPSel,numPlayers,numAI);
+			if(numPlayers+numAI>=2&&numPlayers+numAI<=6)
+				newGame(HPSel,numPlayers,numAI,numNick);
 		}
 		void enter(){
 			if (menustatus==1){
@@ -549,6 +569,21 @@ public class GWar extends JPanel{
 					drawB();
 				}
 				else if (selected==3){
+					if (numNick==0){
+						numNick=1;
+					}
+					else if (numNick==1){
+						numNick=2;
+					}
+					else if (numNick==2){
+						numNick=3;
+					}
+					else if (numNick==3){
+						numNick=0;
+					}
+					drawB();
+				}
+				else if (selected==4){
 					if (HPSel==1){
 						HPSel=2;
 					}
