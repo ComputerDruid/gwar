@@ -13,7 +13,7 @@ public class GWar extends JPanel{
 	public static final int HEIGHT = 400;
 	public double xScale=1024.0/WIDTH;
 	public double yScale=768/HEIGHT;
-	public static final Color[] PCOLOR = {new Color(200,0,200),Color.GREEN,Color.BLUE.brighter(),Color.RED,Color.WHITE,Color.GREEN.darker().darker()};
+	public static final Color[] PCOLOR = {new Color(200,0,200),Color.GREEN,Color.BLUE.brighter(),Color.RED,Color.WHITE,Color.YELLOW,Color.GREEN.darker().darker(),Color.GRAY,new Color(130,37,14)};
 	private int TOTALPLAYERS=2;
 	private int TOTALLIVES=5;
 	private static final Color BACKGROUND = java.awt.Color.BLACK;
@@ -158,6 +158,10 @@ public class GWar extends JPanel{
 	}
 	public void newBackgroundGame(int n){
 		newGame(5,0,n,0);
+		running = 2;
+	}
+	public void newBackgroundGame(int n, int nick){
+		newGame(5,0,n,nick);
 		running = 2;
 	}
 	public void respawn(int index){
@@ -356,7 +360,6 @@ public class GWar extends JPanel{
 				int counter = 0;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("Back",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 1;
 				myBuffer.setColor(new Color(0.0f,0.0f,0.8f,0.3f));
 				myBuffer.fillRect((int)(xScale*(tabspace*4.75+xoffset)),50,150,300);
 				setSelectedColor(0,0);
@@ -374,6 +377,7 @@ public class GWar extends JPanel{
 					myBuffer.setColor(PCOLOR[k]);
 					myBuffer.drawString("NickAI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 				}
+				counter = 1;
 				setSelectedColor(counter,selected);
 				myBuffer.drawString("# Human Players:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				setSelectedColor(numPlayers,0);
@@ -523,8 +527,7 @@ public class GWar extends JPanel{
 				readLevel("level3.gwar");
 			else
 				readLevel("level4.gwar");
-			if(numPlayers+numAI>=2&&numPlayers+numAI<=6)
-				newGame(HPSel,numPlayers,numAI,numNick);
+			newGame(HPSel,numPlayers,numAI,numNick);
 		}
 		void enter(){
 			if (menustatus==1){
@@ -532,11 +535,13 @@ public class GWar extends JPanel{
 			}
 			else if (menustatus==2){
 				if(selected==0){
-					menustatus=0;
-					selected=2;
-					if(TOTALPLAYERS!=numPlayers+numAI)
-						newBackgroundGame(numPlayers+numAI);
-					drawB();
+					if(numPlayers+numAI+numNick>=2&&numPlayers+numAI+numNick<=6){
+						menustatus=0;
+						selected=2;
+						if(TOTALPLAYERS!=numPlayers+numAI+numNick)
+							newBackgroundGame(numPlayers+numAI,numNick);
+						drawB();
+					}
 				}
 				else if (selected==1){
 					if (numPlayers==0){
