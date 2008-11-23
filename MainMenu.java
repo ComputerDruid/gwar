@@ -69,8 +69,7 @@ class MainMenu {
 				myBuffer.fillRect((int)(xScale*(tabspace*4.75+xoffset)),90,150,200);
 				setSelectedColor(myBuffer,0,0);
 				counter++;
-				int k=-1;
-				myBuffer.drawString("PlayerList: ("+(numPlayers+numAI+numNick)+")",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
+				int k;
 				for (k=0;k<numPlayers;k++){
 					myBuffer.setColor(world.PCOLOR[k]);
 					myBuffer.drawString("Human Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
@@ -83,6 +82,9 @@ class MainMenu {
 					myBuffer.setColor(world.PCOLOR[k]);
 					myBuffer.drawString("NickAI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 				}
+				k=-1;
+				myBuffer.drawString("PlayerList: ("+(numPlayers+numAI+numNick)+")",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
+
 				counter = 1;
 				setSelectedColor(myBuffer,counter,selected);
 				myBuffer.drawString("Add Human Player",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
