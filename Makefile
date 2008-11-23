@@ -1,4 +1,4 @@
-JFLAGS = -g -d build -cp build
+JFLAGS = -g -d build -cp build 
 JC = javac
 .SUFFIXES: .java .class
 .java.class:

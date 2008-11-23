@@ -57,7 +57,7 @@ public class GWar extends JPanel{
 		addKeyListener(kl);
 		//newGame();
 		for(int k=0;k<NUMLEVELS;k++)
-			levels[k]=readLevel("level"+(k+1)+".gwar");
+			levels[k]=readLevel("data/level"+(k+1)+".gwar");
 		bump=levels[0];
 		playMusic(music);
 		t.start();
@@ -65,7 +65,7 @@ public class GWar extends JPanel{
 	}
 	public void initMusic(){
 		try {
-			music = new FileInputStream("Chrono_Symphonic_23_The_Last_Stand.mp3");
+			music = new FileInputStream("data/Chrono_Symphonic_23_The_Last_Stand.mp3");
 		} 
 		catch(Exception e){
 			System.out.println("Music failed to load:"+e.getMessage());

@@ -36,7 +36,7 @@ class MainMenu {
 			world=parent;
 			xScale=xs;
 			yScale=ys;
-			helpscreen = new ImageIcon(getClass().getClassLoader().getResource("helpscreen.PNG")).getImage();
+			helpscreen = new ImageIcon(getClass().getClassLoader().getResource("data/helpscreen.PNG")).getImage();
 			//background = new ImageIcon(getClass().getClassLoader().getResource("background.PNG")).getImage();
 			//drawB();
 		}
