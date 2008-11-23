@@ -39,6 +39,11 @@
 			xspark[0]=x;
 			yspark[0]=y;
 		}
+		public void reset(){
+			actionType = NONE;
+			actionValue = -1;
+			lastPositionValue = -500;
+		}
 		 public void update(){
 			flashcount--;
 			onbumper=onBumper();

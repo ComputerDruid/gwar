@@ -88,6 +88,10 @@ public class GWar extends JPanel{
 	}
 	public void loadLevel(int index){
 		bump=levels[index];
+		for(int x=0;x<p.length;x++)
+		{
+			p[x].reset();
+		}
 	}
 	private Bumper[] readLevel(String file){
 		System.out.println(file);
