@@ -83,6 +83,12 @@ class MainMenu {
 					myBuffer.drawString("NickAI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 				}
 				k=-1;
+				if(numPlayers+numAI+numNick<=1)
+					myBuffer.setColor(Color.GREEN);
+				else if(numPlayers+numAI+numNick>=6)
+					myBuffer.setColor(Color.RED);
+				else
+					myBuffer.setColor(Color.YELLOW);
 				myBuffer.drawString("PlayerList: ("+(numPlayers+numAI+numNick)+")",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 
 				counter = 1;
