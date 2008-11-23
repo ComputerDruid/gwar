@@ -11,6 +11,7 @@ public class GWar extends JPanel{
 	private static final int RADIUS = 25; 
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 400;
+	public static final int NUMLEVELS=4;
 	public double xScale=1024.0/WIDTH;
 	public double yScale=768/HEIGHT;
 	public static final Color[] PCOLOR = {new Color(200,0,200),Color.GREEN,Color.BLUE.brighter(),Color.RED,Color.WHITE,Color.YELLOW,Color.GREEN.darker().darker(),Color.GRAY,new Color(130,37,14)};
@@ -26,6 +27,7 @@ public class GWar extends JPanel{
 
 	//public Bumper[] level4={new SpeedBumper(100,150,100,10,3,0,true),new SpeedBumper(400,150,100,10,-3,0,true),new Bumper(250,200,100,5,true), new SpeedBumper(50,300,75,5,0,-15), new SpeedBumper(475,300,75,5,0,-15),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};
 	public Bumper[] bump;
+	private Bumper[][] levels=new Bumper[NUMLEVELS][];
 	public int[] typeAI = new int[]{1, 1, 0};    
 	public KListener kl = new KListener();
 	public int running = 2; //0-Stopped 1-Running 2-Menu 3-Paused
@@ -54,7 +56,9 @@ public class GWar extends JPanel{
 		setFocusable(true);
 		addKeyListener(kl);
 		//newGame();
-		readLevel("level1.gwar");   
+		for(int k=0;k<NUMLEVELS;k++)
+			levels[k]=readLevel("level"+(k+1)+".gwar");
+		bump=levels[0];
 		playMusic(music);
 		t.start();
 		mm.show();
@@ -82,19 +86,22 @@ public class GWar extends JPanel{
 		if(!ismusic)
 			stopMusic();
 	}
-	public void readLevel(String file){
+	public void loadLevel(int index){
+		bump=levels[index];
+	}
+	private Bumper[] readLevel(String file){
 		System.out.println(file);
 		try{
 			java.io.BufferedReader f = new java.io.BufferedReader(new java.io.FileReader(file));
 			int size = Integer.parseInt(f.readLine());
-			bump = new Bumper[size];
+			Bumper[] tempbump = new Bumper[size];
 			for(int k = 0; k<size;k++){
 				java.util.StringTokenizer st = new java.util.StringTokenizer(f.readLine());
 				int blocktype=Integer.parseInt(st.nextToken());
 				if(blocktype==0)
-					bump[k]= new Bumper(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),st.nextToken().equalsIgnoreCase("true"));
+					tempbump[k]= new Bumper(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),st.nextToken().equalsIgnoreCase("true"));
 				else if(blocktype==1)
-					bump[k]= new SpeedBumper(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),st.nextToken().equalsIgnoreCase("true"));
+					tempbump[k]= new SpeedBumper(Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),Double.parseDouble(st.nextToken()),st.nextToken().equalsIgnoreCase("true"));
 
 			}
 			/*size = Integer.parseInt(f.readLine());
@@ -111,6 +118,7 @@ public class GWar extends JPanel{
 			  tempcolor=java.awt.Color.blue;
 			  e.add(new Enemy(tempx,tempy,10,this,tempcolor,1,type));
 			  }*/
+			return tempbump;
 		}
 		catch(java.io.FileNotFoundException ex){
 			System.out.println("Having been erased,");
@@ -123,6 +131,7 @@ public class GWar extends JPanel{
 		catch(java.io.IOException ex){
 			System.out.println("Problem reading file");
 		}
+		return null;
 	}
 	public void stopMusic(){
 		if(player!=null)

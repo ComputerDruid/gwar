@@ -198,14 +198,7 @@ class MainMenu {
 			//drawB();
 		}
 		void newGameCurrentSettings(){
-			if(LevelSel==1)
-				world.readLevel("level1.gwar");
-			else if(LevelSel==2)
-				world.readLevel("level2.gwar");
-			else if(LevelSel==3)
-				world.readLevel("level3.gwar");
-			else
-				world.readLevel("level4.gwar");
+			world.loadLevel(LevelSel-1);
 			world.newGame(HPSel,numPlayers,numAI,numNick);
 		}
 		void enter(){
@@ -294,14 +287,7 @@ class MainMenu {
 					else if(LevelSel==4){
 						LevelSel=1;
 					}
-					if(LevelSel==1)
-						world.readLevel("level1.gwar");
-					else if(LevelSel==2)
-						world.readLevel("level2.gwar");
-					else if(LevelSel==3)
-						world.readLevel("level3.gwar");
-					else
-						world.readLevel("level4.gwar");
+					world.loadLevel(LevelSel-1);
 					//drawB();
 				}
 				else if (selected==2){
