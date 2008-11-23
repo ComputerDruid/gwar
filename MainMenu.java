@@ -66,10 +66,11 @@ class MainMenu {
 				setSelectedColor(myBuffer,counter,selected);
 				myBuffer.drawString("Back",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				myBuffer.setColor(new Color(0.0f,0.0f,0.8f,0.3f));
-				myBuffer.fillRect((int)(xScale*(tabspace*4.75+xoffset)),50,150,300);
+				myBuffer.fillRect((int)(xScale*(tabspace*4.75+xoffset)),90,150,200);
 				setSelectedColor(myBuffer,0,0);
+				counter++;
 				int k=-1;
-				myBuffer.drawString("PlayerList:",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
+				myBuffer.drawString("PlayerList: ("+(numPlayers+numAI+numNick)+")",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 				for (k=0;k<numPlayers;k++){
 					myBuffer.setColor(world.PCOLOR[k]);
 					myBuffer.drawString("Human Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
