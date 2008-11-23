@@ -9,7 +9,8 @@ CLASSES = \
 	Hero.java \
 	Bumper.java \
 	SpeedBumper.java \
-	Item.java
+	Item.java \
+	MainMenu.java
 
 default: classes
 

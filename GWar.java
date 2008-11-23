@@ -28,7 +28,7 @@ public class GWar extends JPanel{
 	public Bumper[] bump;
 	public int[] typeAI = new int[]{1, 1, 0};    
 	public KListener kl = new KListener();
-	private int running = 2; //0-Stopped 1-Running 2-Menu 3-Paused
+	public int running = 2; //0-Stopped 1-Running 2-Menu 3-Paused
 	private boolean fullscreen = false;
 	private MainMenu mm;
 	private JFrame window;
@@ -39,6 +39,7 @@ public class GWar extends JPanel{
 	PlayerThread pt;
 	public GWar(){
 		ismusic=true;
+		mm = new MainMenu(this, xScale,yScale);
 		setupFrame();
 		initMusic();
 		TOTALPLAYERS = 2;
@@ -50,7 +51,6 @@ public class GWar extends JPanel{
 						update();
 					} 
 				});
-		mm = new MainMenu();
 		setFocusable(true);
 		addKeyListener(kl);
 		//newGame();
@@ -76,6 +76,11 @@ public class GWar extends JPanel{
 		catch(Exception e){
 			System.out.println("Music failed to play");
 		}
+	}
+	public void toggleMusic(){
+		ismusic=!ismusic;
+		if(!ismusic)
+			stopMusic();
 	}
 	public void readLevel(String file){
 		System.out.println(file);
@@ -232,8 +237,7 @@ public class GWar extends JPanel{
 			display();
 		else if (running == 2){
 			display();
-			//mm.draw(myBuffer);
-			mm.drawB();
+			mm.drawB(myBuffer);
 			repaint();    
 		}
 	}
@@ -302,325 +306,7 @@ public class GWar extends JPanel{
 		running=1;
 		t.start();
 	}
-	class MainMenu {
-		//BufferedImage menubuffer = myImage;//new BufferedImage (WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
-		//Graphics myBuffer = menubuffer.createGraphics();
-		int selected=0;
-		int menustatus=0;//0-main 1-help 2-alt
-		int numPlayers=1;
-		int[] pNumPlayers = {1,2,3};
-		int HPSel=5;
-		int PlayerSizeSel=25;
-		int PelletSizeSel=5;
-		int LevelSel=1;
-		int numAI=1;
-		int numNick=0;
-		final int ListSize=7;
-		final int AltListSize=5;
-		final int spacebetweenlines = 25; 
-		final int xoffset = 30;
-		final int yoffset = 120;
-		final int tabspace = 85;
-		//final String[] menuTitles new String[]{"Start", "# Human Players:", "# AI Players:", "Lives:", "Level:", "Toggle Fullscreen Mode (experimental)", "Help", "Exit"};
-		//final String[][] menuChoices = {{},{"0","1","2","3"},{"0","1","2","3"},{"1","2","3","4","5"},{"Battlefield","FD","new"},{},{}};
-		Image helpscreen;
-		//Image background;
-		MainMenu(){
-			helpscreen = new ImageIcon(getClass().getClassLoader().getResource("helpscreen.PNG")).getImage();
-			//background = new ImageIcon(getClass().getClassLoader().getResource("background.PNG")).getImage();
-			myBuffer.setFont(new Font("SansSerif",Font.BOLD,(int)(15*yScale)));
-			drawB();
-		}
-		void show(){
-			newBackgroundGame(numPlayers+numAI,numNick);
-			running=2;
-		}
-		/*void draw(Graphics g){
-		  if (helpshowing==true){
-		  g.drawImage(helpscreen,0,0,null);
-		  }
-		  else{
-		  g.drawImage(menubuffer,0,0,null);
-		  }
-		  }*/
-		void drawB(){
-			if (menustatus==1){
-				myBuffer.drawImage(helpscreen,0,0,(int)(WIDTH*xScale),(int)(HEIGHT*yScale),null);
-			}
-			else if (menustatus==2){
-				int counter = 0;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Back",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				myBuffer.setColor(new Color(0.0f,0.0f,0.8f,0.3f));
-				myBuffer.fillRect((int)(xScale*(tabspace*4.75+xoffset)),50,150,300);
-				setSelectedColor(0,0);
-				int k=-1;
-				myBuffer.drawString("PlayerList:",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
-				for (k=0;k<numPlayers;k++){
-					myBuffer.setColor(PCOLOR[k]);
-					myBuffer.drawString("Human Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
-				}
-				for (;k<numPlayers+numAI;k++){
-					myBuffer.setColor(PCOLOR[k]);
-					myBuffer.drawString("AI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
-				}
-				for (;k<numPlayers+numAI+numNick;k++){
-					myBuffer.setColor(PCOLOR[k]);
-					myBuffer.drawString("NickAI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
-				}
-				counter = 1;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Add Human Player",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				//setSelectedColor(numPlayers,0);
-				//setSelectedColor(0,0);
-				//myBuffer.drawString(numPlayers+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 2;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Add AI Player",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				//setSelectedColor(numAI,0);
-				//setSelectedColor(0,0);
-				//myBuffer.drawString(numAI+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 3;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Add NickAI Player",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				//setSelectedColor(numAI,0);
-				//setSelectedColor(0,0);
-				//myBuffer.drawString(numNick+"",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				
-				counter = 4;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Lives:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(HPSel,1);
-				setSelectedColor(0,0);
-				myBuffer.drawString(HPSel+"",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-
-			}
-			else{
-				int counter = 0;
-				myBuffer.setFont(new Font("SansSerif",Font.BOLD,(int)(75*yScale)));
-				myBuffer.setColor(new Color(0,255,255));
-				myBuffer.drawString("GWar!",(int)(xoffset*xScale),(int)((spacebetweenlines+60)*yScale));
-				myBuffer.setFont(new Font("SansSerif",Font.BOLD,(int)(15*yScale)));
-				/*myBuffer.setColor(Color.BLACK);
-				  myBuffer.fillRect(0,0,WIDTH,HEIGHT);*/
-				//myBuffer.drawImage(background,0,0,null);
-				setSelectedColor(counter,selected);
-				counter = 0;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Start",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 1;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Level:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(LevelSel,1);
-				myBuffer.drawString("Totally Original",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(LevelSel,2);
-				myBuffer.drawString("Even Ground",(int)(xScale*(tabspace*3+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(LevelSel,3);
-				myBuffer.drawString("Overlook",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(LevelSel,4);
-				myBuffer.drawString("Islands",(int)(xScale*(tabspace*6+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 2;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Game Setup ...     (Human: "+numPlayers+", AI: "+(numAI+numNick)+", Lives:"+HPSel+")",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 3;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Toggle Fullscreen Mode",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 4;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Music:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(ismusic,true);
-				myBuffer.drawString("On",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(ismusic,false);
-				myBuffer.drawString("Off",(int)(xScale*(tabspace*2+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 5;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Help",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				counter = 6;
-				setSelectedColor(counter,selected);
-				myBuffer.drawString("Exit",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(counter,-1);
-				myBuffer.setColor(new Color(0,255,255));
-				myBuffer.drawString("Music by RoeTaKa -- OverClocked ReMix (www.ocremix.org)",(int)(xScale*(0+xoffset)),(int)(yScale*(HEIGHT-45)));
-				myBuffer.drawString("By Daniel Johnson (johnmon2) for TJGames.org",(int)(xScale*(0+xoffset)),(int)(yScale*(HEIGHT-25)));
-				myBuffer.drawString("Licensed under GNU GPL 2",(int)(xScale*(0+xoffset)),(int)(yScale*(HEIGHT-5)));
-			}
-			//drawPlayer(myBuffer,1,15,selected*spacebetweenlines+yoffset-7,90,0,25,true);
-		}
-		void setSelectedColor(int var1,int con1){
-			if (var1==con1){
-				myBuffer.setColor(Color.yellow);
-			}
-			else{
-				myBuffer.setColor(Color.white);
-			}
-		}
-		void setSelectedColor(boolean var1,boolean con1){
-			if (var1==con1){
-				myBuffer.setColor(Color.yellow);
-			}
-			else{
-				myBuffer.setColor(Color.white);
-			}
-		}
-		void moveUp(){
-			selected--;
-			if (selected < 0){
-				if(menustatus==2)
-					selected=AltListSize-1;
-				else
-					selected=ListSize-1;
-			}
-			drawB();
-		}
-		void moveDown(){
-			selected++;
-			if(menustatus==2){
-				if (selected >= AltListSize)
-					selected=0;
-			}
-			else if (selected >= ListSize){
-				selected=0;
-			}
-			drawB();
-		}
-		void newGameCurrentSettings(){
-			if(LevelSel==1)
-				readLevel("level1.gwar");
-			else if(LevelSel==2)
-				readLevel("level2.gwar");
-			else if(LevelSel==3)
-				readLevel("level3.gwar");
-			else
-				readLevel("level4.gwar");
-			newGame(HPSel,numPlayers,numAI,numNick);
-		}
-		void enter(){
-			if (menustatus==1){
-				menustatus=0;
-			}
-			else if (menustatus==2){
-				if(selected==0){
-					if(numPlayers+numAI+numNick>=2&&numPlayers+numAI+numNick<=6){
-						menustatus=0;
-						selected=2;
-						if(TOTALPLAYERS!=numPlayers+numAI+numNick)
-							newBackgroundGame(numPlayers+numAI,numNick);
-						drawB();
-					}
-				}
-				else if (selected==1){
-					if (numPlayers+numAI+numNick<6){
-						numPlayers++;
-					}
-					else{
-						numPlayers=0;
-					}
-					drawB();
-				}
-				else if (selected==2){
-					if (numPlayers+numAI+numNick<6){
-						numAI++;
-					}
-					else{
-						numAI=0;
-					}
-					drawB();
-				}
-				else if (selected==3){
-					if (numPlayers+numAI+numNick<6){
-						numNick++;
-					}
-					else{
-						numNick=0;
-					}
-					drawB();
-				}
-				else if (selected==4){
-					if (HPSel==1){
-						HPSel=2;
-					}
-					else if (HPSel==2){
-						HPSel=3;
-					}
-					else if (HPSel==3){
-						HPSel=4;
-					}
-					else if (HPSel==4){
-						HPSel=5;
-					}
-					else if (HPSel==5){
-						HPSel=10;
-					}
-					else if (HPSel==10){
-						HPSel=1;
-					}
-					drawB();
-				}
-			}
-			else{
-				if (selected==0){
-
-					// NGWin.setLocationRelativeTo(null);
-					// NGWin.setVisible(true);
-					// while (NGWin.getDone()!=true){
-					// }
-					newGameCurrentSettings();
-
-				}
-				else if (selected==1){
-					if (LevelSel==1){
-						LevelSel=2;
-					}
-					else if(LevelSel==2){
-						LevelSel=3;
-					}
-					else if (LevelSel==3){
-						LevelSel=4;
-					}
-					else if(LevelSel==4){
-						LevelSel=1;
-					}
-					if(LevelSel==1)
-						readLevel("level1.gwar");
-					else if(LevelSel==2)
-						readLevel("level2.gwar");
-					else if(LevelSel==3)
-						readLevel("level3.gwar");
-					else
-						readLevel("level4.gwar");
-					drawB();
-				}
-				else if (selected==2){
-					menustatus=2;
-					selected=0;
-					drawB();
-				}
-				else if (selected==3){
-					toggleFullscreen();
-				}
-				else if (selected==4){
-					ismusic=!ismusic;
-					if(!ismusic)
-						stopMusic();
-					//else
-					//playMusic(music);
-					drawB();
-				}
-				else if (selected==5){
-					menustatus=1;
-					drawB();
-				}
-				else if (selected==6){
-					/*gametimer.stop();
-					  window.setVisible(false);
-					//window.close();
-					window.dispose();
-					window=null;*/
-					System.exit(0);
-				}
-			}
-		}
-	}
+	
 
 	private class KListener extends KeyAdapter{
 		private boolean p1left=false;
@@ -852,6 +538,7 @@ public class GWar extends JPanel{
 			xScale=1;
 			yScale=1;
 		}
+		mm.updateScreenInfo(xScale,yScale);
 		myImage =  new BufferedImage((int)(WIDTH*xScale), (int)(HEIGHT*yScale), BufferedImage.TYPE_INT_RGB);
 		myBuffer = myImage.getGraphics();
 		myBuffer.setColor(BACKGROUND);
@@ -884,7 +571,7 @@ public class GWar extends JPanel{
 		}
 		fullscreen=false;
 	}
-	private void toggleFullscreen(){
+	public void toggleFullscreen(){
 		window.setVisible(false);
 		window=null;
 		fullscreen = !fullscreen;
