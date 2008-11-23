@@ -15,13 +15,13 @@ public class GWar extends JPanel{
 	public double yScale=768/HEIGHT;
 	public static final Color[] PCOLOR = {new Color(200,0,200),Color.GREEN,Color.BLUE.brighter(),Color.RED,Color.WHITE,Color.YELLOW,Color.GREEN.darker().darker(),Color.GRAY,new Color(130,37,14)};
 	private int TOTALPLAYERS=2;
-	private int TOTALLIVES=5;
+	public int TOTALLIVES=5;
 	private static final Color BACKGROUND = java.awt.Color.BLACK;
 	private BufferedImage myImage;
 	private Graphics myBuffer;
 	private Timer t;
 	public Hero[] p = new Hero[TOTALPLAYERS];
-	private int[] lives = new int[TOTALPLAYERS];
+	public int[] lives = new int[TOTALPLAYERS];
 	private int numalive = TOTALPLAYERS;  
 
 	//public Bumper[] level4={new SpeedBumper(100,150,100,10,3,0,true),new SpeedBumper(400,150,100,10,-3,0,true),new Bumper(250,200,100,5,true), new SpeedBumper(50,300,75,5,0,-15), new SpeedBumper(475,300,75,5,0,-15),new Bumper(150,250,50,5,true),new Bumper(400,250,50,5,true),new Bumper(150,350,100,10,true),new Bumper(350,350,100,10,true)};

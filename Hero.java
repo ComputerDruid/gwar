@@ -1,7 +1,7 @@
 	import javax.swing.*;
 	import java.awt.*;
 	 class Hero	extends Item{
-		public static final int	NONE = 0, BORDER = 1, BUMPER = 2;
+		public static final int	NONE = 0, BORDER = 1, BUMPER = 2, FIGHT = 3;
 		public double dy,dx;
 		private double	SPEED	= 3;
 		private GWar world;
@@ -102,35 +102,35 @@
 		}
 		 public int	getBorderValue(Hero h){
 			double minDist	= nearestBorder(h);
-			if(minDist<60)
+			if(minDist<40)
 			{
-				return -10;
+				return -6;
 			}
-			else if(minDist<100)
+			else if(minDist<80)
 			{
-				return -5;
+				return -3;
 			}
-			else if(minDist <	150)
+			else if(minDist <	120)
 			{
-				return 5;
+				return 3;
 			}
 			else
 			{
-				return 10;
+				return 6;
 			}
 		}
 		 public int	getBumperValue(Hero h){
 			if(h.onBumper())
 			{
-				return 10;
+				return 6;
 			}
 			else if(h.overBumper())
 			{
-				return 5;
+				return 3;
 			}
 			else
 			{
-				return -5;
+				return -6;
 			}
 		}
 		 public int	getPositionValue(Hero h){
@@ -142,13 +142,13 @@
 		 public int	getProblem(Hero	h){
 			int bord	= getBorderValue(h);
 			int bump	= getBumperValue(h);
-			if(bord<0)
-			{
-				return BORDER;
-			}
 			if(bump<0)
 			{
 				return BUMPER;
+			}
+			if(bord<0)
+			{
+				return BORDER;
 			}
 			return NONE;
 		}
@@ -160,10 +160,37 @@
 			actionType = BUMPER;
 			actionValue	= -1;
 		}
+		public void setTarget(){
+			actionType = FIGHT;
+			actionValue = findNickTarget(this);
+		}
+		public void fixBumperProblem(){
+			if(actionValue == -1)
+			{
+				actionValue = nearestTargetBumper(0,0,this,false);
+			}
+			else
+			{
+				try
+				{
+					Bumper tar = world.bump[actionValue];
+					goToTarget(tar);
+					Bumper on =	onWhatBumper();
+					if(on!=null && on.x == tar.x && on.y == tar.y)
+					{
+							stop();
+							actionType	= NONE;
+					}
+				}
+				catch(ArrayIndexOutOfBoundsException e)
+				{
+				}
+			}
+		}
 		 public void fixBorderProblem(){
 			if(actionValue	==	-1)
 			{
-				actionValue	= nearestTargetBumper(world.WIDTH/2,world.HEIGHT/2,this);
+				actionValue	= nearestTargetBumper(world.WIDTH/2,world.HEIGHT/2,this,true);
 			}
 			else
 			{
@@ -228,7 +255,7 @@
 			{
 				attackRight();
 			}
-			if(dy<-8&&overBumper()&&world.HEIGHT-y<50)
+			if(dy<-8&&overBumper()&&y<50)
 			{
 				fastFall();
 			}
@@ -245,19 +272,51 @@
 			{
 				fixBorderProblem();
 			}
+			else if(actionType == BUMPER)
+			{
+				fixBumperProblem();
+			}
 			if(problem == BORDER)
 			{
 				fixBorder();
 			}
 			else if(problem == BUMPER)
 			{
-			//	fixBumper();
+				fixBumper();
+			}
+			else if(problem == NONE)
+			{
+			//	setTarget();
 			}
 			/*if(position < lastPositionValue)
 			{
 				reverseLastAction();
 			}*/
 			lastPositionValue	= position;
+		}
+		public int	findNickTarget(Hero h){
+			int mVal = 9999,value,distValue=0, lifeValue, totValue;
+			int min=-1;
+			Hero t;
+			for(int k =0; k <	world.p.length;k++)
+			{
+				t = world.p[k];
+				distValue = (int)(distance(h,t.x,t.y)/50);
+				value = getPositionValue(t);
+				lifeValue = world.TOTALLIVES-world.lives[k];
+				totValue = distValue+value+lifeValue;
+			/*	System.out.println("---- " + k+" ----");
+				System.out.println("Dif: "+(b.y-h.y));
+				System.out.println(dist1);
+				System.out.println(dist2);
+				System.out.println(distTot);*/
+				if(totValue<mVal)
+				{
+					mVal = totValue;
+					min =	k;
+				}
+			}
+			return min;
 		}
 		public double getMaxXDist(double tx, double ty, Hero h){
 			int lJumps = 2-jumps;
@@ -275,8 +334,8 @@
 			}
 			return 0;
 		}
-		 public int	nearestTargetBumper(double	tx,double ty, Hero h){
-			double mDist =	999999999,dist1,dist2,distTot;
+		 public int	nearestTargetBumper(double	tx,double ty, Hero h, boolean both){
+			double mDist =	999999999,dist1,dist2=0,distTot;
 			int min=-1;
 			Bumper b;
 			for(int k =0; k <	world.bump.length;k++)
@@ -291,7 +350,10 @@
 				{
 					dist1*=5;
 				}
-				dist2	= distance(tx,ty,b.x+b.width/2,b.y)*1.5;
+				if(both)
+				{
+					dist2	= distance(tx,ty,b.x+b.width/2,b.y)*1.5;
+				}
 				distTot = dist1+dist2;
 			/*	System.out.println("---- " + k+" ----");
 				System.out.println("Dif: "+(b.y-h.y));
