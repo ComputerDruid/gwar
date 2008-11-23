@@ -21,6 +21,8 @@ init:
 
 run: 
 	cd build; java GWar
+debug:
+	cd build; java GWar -d
 
 clean:
 	$(RM) build/*.class
