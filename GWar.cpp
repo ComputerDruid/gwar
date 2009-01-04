@@ -1,15 +1,79 @@
 #include <stdio.h>
 #include "Hero.h"
-
+#include "SDL/SDL.h"
+#include "SDL/SDL_image.h"
+#include <string>
+#include "Display.h" //contains blit method
 Hero* h;
+SDL_Surface* background = NULL;
+SDL_Surface* screen = NULL;
+SDL_Surface* sprite = NULL;
 void display();
-int main(){
-	h = new Hero(400,200,10);
-	h->update();
-	display();
+int initDisplay();
+
+SDL_Surface* load_image(std::string fname){
+	SDL_Surface* tImage = NULL;
+	SDL_Surface* image = NULL;
+	tImage = IMG_Load(fname.c_str());
+	image = SDL_DisplayFormat(tImage);
+	SDL_FreeSurface(tImage);
+	return image;
+}
+
+void input(){
+	Uint8* keystates = SDL_GetKeyState(NULL);
+	if(keystates[SDLK_UP])
+		printf("up key pressed\n");
+	if(keystates[SDLK_DOWN])
+		printf("down key pressed\n");
+	if(keystates[SDLK_LEFT])
+		printf("left key pressed\n");
+	if(keystates[SDLK_RIGHT])
+		printf("right key pressed\n");
+}	
+
+int main(int argc, char* argv[]){
+	bool running = true;
+	if(initDisplay()!=0)
+		return 1;
+	int k = 0;
+	h = new Hero(400,200,10,sprite);
+	SDL_Event event;
+	while (running){
+		while(SDL_PollEvent( &event) ){
+			if(event.type==SDL_QUIT){
+				running=false;
+			}
+			if(event.type==SDL_KEYDOWN){
+				if(event.key.keysym.sym==SDLK_UP)
+					h->jump();
+			}
+		}
+		input();
+		h->update();
+		display();
+		SDL_Delay(100);
+	}
+	SDL_FreeSurface(background);
+	SDL_Quit();
+	return 0;
 }
 void display(){
 	printf("Drawing screen\n");
 	printf("blanking screen\n");
-	h->draw();
+	blit(0,0,background,screen);
+	h->draw(screen);
+	SDL_Flip(screen);
+}
+int initDisplay(){
+	if ( SDL_Init( SDL_INIT_EVERYTHING ) == -1 ){
+		printf ("Error loading SDL\n");
+		return 1;
+	}
+	screen = SDL_SetVideoMode( 640, 480, 32, SDL_SWSURFACE );
+	background=load_image("background.png");
+	sprite=load_image("hello_world.png");
+	SDL_WM_SetCaption( "GWar", NULL);
+	//display();
+	return 0;
 }
