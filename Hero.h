@@ -1,6 +1,10 @@
-class Hero {
+#include "Item.h"
+class Hero : public Item {
 	public:
+		Hero(double,double,int);
 		double dy;
 		double dx;
-		void draw();
-}
+		void update();
+	private:
+		//color c
+};
