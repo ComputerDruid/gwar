@@ -8,10 +8,14 @@ class Hero : public Item {
 		void update();
 		void jump();
 		void draw(SDL_Surface*);
+		void setAccel(int);
+		void attack();
+		void fastFall();
 	private:
 		//color c
 		int jumps;
 		int tiedcount;
+		int accel;
 		static const int SPEED=3;
 		SDL_Surface* sprite;
 };
