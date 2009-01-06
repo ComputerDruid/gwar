@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
 	if(initDisplay()!=0)
 		return 1;
 	int k = 0;
-	h = new Hero(400,200,10,sprite);
+	h = new Hero(400,200,10,sprite,0,NULL);
 	SDL_Event event;
 	while (running){
 		while(SDL_PollEvent( &event) ){

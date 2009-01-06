@@ -21,7 +21,7 @@
 		private boolean flashleft;
 		private int	flashcount = 0;
 		private int	lastPositionValue=-500,	actionType,	actionValue=-1;
-		 public Hero(double x, double	y,	int r,GWar tp,	java.awt.Color	c,double	mass){
+		public Hero(double x, double y, int r,GWar tp, java.awt.Color c,double mass){
 			super(x,y,r,c);
 			dy=0;
 			dx=0;
@@ -31,7 +31,7 @@
 			actionType = NONE;
 			actionValue = -1;
 		}
-		 private	void addsparkle(){
+		private void addsparkle(){
 			for (int	k = xspark.length-1;k>0;k--){
 				xspark[k]=xspark[k-1];
 				yspark[k]=yspark[k-1];
@@ -44,7 +44,7 @@
 			actionValue = -1;
 			lastPositionValue = -500;
 		}
-		 public void update(){
+		public void update(){
 			flashcount--;
 			onbumper=onBumper();
 			if	(tiedcount>0)
@@ -432,7 +432,7 @@
 			racceleration = false;
 			lacceleration = false;
 		}
-		 private	Hero findTarget(){
+		private	Hero findTarget(){
 			Hero target	= null;
 			double distance =	-1;
 			for (int	k = 0; k< world.p.length; k++){
@@ -511,11 +511,11 @@
 				}
 			}
 		}
-		 public void gravity(){
+		public void gravity(){
 			if(!onBumper())
 				dy+=.5;
 		}
-		 public boolean overBumper(){
+		public boolean overBumper(){
 			boolean temp =	false;
 			for(int k =	0;k<world.bump.length;k++){
 				if(world.bump[k].overBumper(this)){
@@ -525,14 +525,13 @@
 			}
 			return temp;
 		}
-		 public boolean checkHBumper()
-		{
+		public boolean checkHBumper(){
 			if	(onBumper())
 				return false;
 			else
 				return checkBumper(dx,0)!=-1;
 		}
-		 public boolean checkVBumper()
+		public boolean checkVBumper()
 		{
 			int k	= checkBumper(0,dy);
 			if	(k!=-1){

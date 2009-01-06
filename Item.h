@@ -1,3 +1,6 @@
+#ifdef ITEM_H
+#else
+#define ITEM_H
 class Item {
 	public:
 		Item(double,double,int/*,color*/);
@@ -7,3 +10,4 @@ class Item {
 		void draw();
 		bool intersects(Item);
 };
+#endif

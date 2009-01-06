@@ -1,12 +1,16 @@
 #include <stdio.h>
+#include "Bumper.h"
 #include "Hero.h"
+#include "Item.h"
 #include "SDL/SDL.h"
 #include "Display.h"//has blit method
 
-Hero::Hero(double x, double y, int r, SDL_Surface* s) : Item(x,y,r) {
+Hero::Hero(double x, double y, int r, SDL_Surface* s, int n, Bumper* b) : Item(x,y,r) {
 	jumps=0;
 	tiedcount=0;
 	sprite=s;
+	bump=b;
+	numBumpers=n;
 }
 void Hero::setAccel(int a){
 	accel=a;
@@ -70,7 +74,7 @@ void Hero::attack(){
 void Hero::fastFall(){
 	if(tiedcount==0){
 		if(onBumper()){
-			if(onWhatBumper.passthrough){
+			if(bump[onWhatBumper()].passthrough){
 				y++;
 				dy=10;
 			}
@@ -86,3 +90,71 @@ void Hero::fastFall(){
 void Hero::draw(SDL_Surface* screen){
 	blit(x,y,sprite,screen);
 }
+bool Hero::overBumper(){
+	for (int k=0; k<numBumpers;k++){
+		if(bump[k].overBumper(this)){
+			return true;
+		}
+	}
+	return false;
+}
+bool Hero::checkHBumper(){
+	if (onBumper())
+		return false;
+	else
+		return checkBumper(dx,0)!=-1;
+}
+bool Hero::checkVBumper(){
+	int k = checkBumper(0,dy);
+	if (k!=-1){
+		if (y<bump[k].getY()){
+			y= bump[k].getY()-r;
+			dy=0;
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+bool Hero::onBumper(){
+	for(int k=0;k<numBumpers;k++){
+		if (bump[k].onBumper(this)){
+			return true;
+		}
+	}
+	return false;
+}
+int Hero::onWhatBumper(){
+	for(int k=0;k<numBumpers;k++){
+		if (bump[k].onBumper(this)){
+			return k;
+		}
+	}
+	return false;
+}
+int Hero::checkBumper(double pdx, double pdy){
+	for(int k=0;k<numBumpers;k++){
+		if( checkBumper(bump[k],pdy,pdx))
+			return k;
+	}
+	return -1;
+}
+bool Hero::checkBumper(Bumper b, double pdx, double pdy){
+	if ((b.overBumper(x+pdx,y,r)||b.onBumper(this))&&(y+r+pdy>b.getY())){
+		y=b.getY()-r; 
+		dy=0;
+		return false;	
+	}
+	else if (b.check(x,y,pdx,pdy,r)){
+		return true;
+	}
+	return false;
+}
+bool Hero::onScreen(int width, int height){
+	if(x-r>0&&x+r<width&&y-r>0&&y+r<height)
+		return true;
+	return false;
+}
+//void Hero::checkPlayer(Hero p)}{
+//	if (intersects(p)){
+
