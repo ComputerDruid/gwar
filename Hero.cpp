@@ -11,6 +11,9 @@ Hero::Hero(double x, double y, int r, SDL_Surface* s, int n, Bumper* b) : Item(x
 	sprite=s;
 	bump=b;
 	numBumpers=n;
+	dy=0;
+	dx=0;
+	accel=0;
 }
 void Hero::setAccel(int a){
 	accel=a;

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "Hero.h"
+#include "Bumper.h"
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include <string>
@@ -10,6 +11,8 @@ SDL_Surface* screen = NULL;
 SDL_Surface* sprite = NULL;
 void display();
 int initDisplay();
+int a=0;
+Bumper bump [1] = {Bumper(100,300,400,10)};
 
 SDL_Surface* load_image(std::string fname){
 	SDL_Surface* tImage = NULL;
@@ -22,14 +25,19 @@ SDL_Surface* load_image(std::string fname){
 
 void input(){
 	Uint8* keystates = SDL_GetKeyState(NULL);
+	a=0;
 	if(keystates[SDLK_UP])
 		printf("up key pressed\n");
 	if(keystates[SDLK_DOWN])
 		printf("down key pressed\n");
-	if(keystates[SDLK_LEFT])
+	if(keystates[SDLK_LEFT]){
 		printf("left key pressed\n");
-	if(keystates[SDLK_RIGHT])
+		a--;
+	}
+	if(keystates[SDLK_RIGHT]){
 		printf("right key pressed\n");
+		a++;
+	}
 }	
 
 int main(int argc, char* argv[]){
@@ -39,7 +47,9 @@ int main(int argc, char* argv[]){
 		return 1;
 	printf("=Display Initialized=\n");
 	int k = 0;
-	h = new Hero(400,200,10,sprite,0,NULL);
+	//bump = new Bumper[1];
+	//bump[0]= Bumper(100,300,400,10);
+	h = new Hero(400,200,10,sprite,1,bump);
 	printf("=Hero Created=\n");
 	SDL_Event event;
 	while (running){
@@ -50,10 +60,13 @@ int main(int argc, char* argv[]){
 			if(event.type==SDL_KEYDOWN){
 				if(event.key.keysym.sym==SDLK_UP)
 					h->jump();
+				else if(event.key.keysym.sym==SDLK_DOWN)
+					h->fastFall();
 			}
 		}
 		printf("==Frame==\n");
 		input();
+		h->setAccel(a);
 		h->update();
 		display();
 		SDL_Delay(100);
