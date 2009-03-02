@@ -34,10 +34,13 @@ void input(){
 
 int main(int argc, char* argv[]){
 	bool running = true;
+	printf("=Ready=\n");
 	if(initDisplay()!=0)
 		return 1;
+	printf("=Display Initialized=\n");
 	int k = 0;
 	h = new Hero(400,200,10,sprite,0,NULL);
+	printf("=Hero Created=\n");
 	SDL_Event event;
 	while (running){
 		while(SDL_PollEvent( &event) ){
@@ -49,6 +52,7 @@ int main(int argc, char* argv[]){
 					h->jump();
 			}
 		}
+		printf("==Frame==\n");
 		input();
 		h->update();
 		display();
@@ -71,7 +75,9 @@ int initDisplay(){
 		return 1;
 	}
 	screen = SDL_SetVideoMode( 640, 480, 32, SDL_SWSURFACE );
+	printf("==Loading background.png==\n");
 	background=load_image("background.png");
+	printf("==Loading hello_world.png==\n");
 	sprite=load_image("hello_world.png");
 	SDL_WM_SetCaption( "GWar", NULL);
 	//display();
