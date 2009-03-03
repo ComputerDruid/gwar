@@ -8,8 +8,9 @@ class Bumper{
 	public:
 		bool passthrough;
 		SDL_Rect bouds;
-		Bumper(double,double,double,double);
-		Bumper(double,double,double,double,bool);
+		Bumper(double,double,double,double,SDL_Surface*);
+		Bumper(double,double,double,double,bool,SDL_Surface* s);
+		void init(double,double,double,double,bool,SDL_Surface* s);
 		double getX();
 		double getY();
 		double getWidth();
@@ -33,6 +34,7 @@ class Bumper{
 		bool check2(double,double,double);
 		bool cornerCheck(Item*);
 		bool cornerCheck(double,double,double);
+		SDL_Surface* suf;
 
 };
 #endif

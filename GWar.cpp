@@ -12,7 +12,7 @@ SDL_Surface* sprite = NULL;
 void display();
 int initDisplay();
 int a=0;
-Bumper bump [1] = {Bumper(100,300,400,10)};
+Bumper *bump[1];
 
 SDL_Surface* load_image(std::string fname){
 	SDL_Surface* tImage = NULL;
@@ -47,8 +47,12 @@ int main(int argc, char* argv[]){
 		return 1;
 	printf("=Display Initialized=\n");
 	int k = 0;
-	//bump = new Bumper[1];
+	//bump = Bumper[1];
 	//bump[0]= Bumper(100,300,400,10);
+	bump[0] = new Bumper(100,300,400,10,sprite);
+	printf("=brand new bump's getX=: %f\n",bump[0]->getX());
+	Bumper b = Bumper(100,300,400,10,sprite);
+	printf("=brand new b's getX=: %f\n",b.getX());
 	h = new Hero(400,200,10,sprite,1,bump);
 	printf("=Hero Created=\n");
 	SDL_Event event;
@@ -80,6 +84,8 @@ void display(){
 	printf("blanking screen\n");
 	blit(0,0,background,screen);
 	h->draw(screen);
+	printf("bump[0].getX(): %f\n",bump[0]->getX());
+	bump[0]->draw(screen);
 	SDL_Flip(screen);
 }
 int initDisplay(){

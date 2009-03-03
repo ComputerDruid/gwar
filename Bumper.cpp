@@ -1,14 +1,20 @@
 #include "Bumper.h"
+#include "Display.h"
 #include <math.h>
-Bumper::Bumper(double x, double y, double width, double height){
-	Bumper(x,y,width,height,false);
+Bumper::Bumper(double xnew, double ynew, double width, double height, SDL_Surface* s){
+	init(xnew,ynew,width,height,false,s);
 }
-Bumper::Bumper(double xnew, double ynew, double newwidth, double newheight, bool pt){
+Bumper::Bumper(double xnew, double ynew, double newwidth, double newheight, bool pt, SDL_Surface* s){
+	init(xnew,ynew,newwidth,newheight,pt,s);
+}
+void Bumper::init(double xnew, double ynew, double newwidth, double newheight, bool pt, SDL_Surface* s){
 	passthrough=pt;
 	x=xnew;
 	y=ynew;
 	width=newwidth;
 	height=newheight;
+	suf=s;
+	printf("==Bumper constructor called with (%f,%f) %d\n",getX(),y,s);
 }
 double Bumper::getX(){
 	return x;
@@ -22,8 +28,13 @@ double Bumper::getWidth(){
 double Bumper::getHeight(){
 	return height;
 }
-void Bumper::draw(SDL_Surface* screen){
+/*void Bumper::draw(SDL_Surface* screen){
 	//TODO: Implement drawing of bumpers
+	
+}*/
+void Bumper::draw(SDL_Surface* screen){
+	blit(x,y,suf,screen);
+	printf("===Drawing bumper (%d) at (%f,%f)===\n",suf,x,y);
 }
 bool Bumper::hIntersects(Item* i){
 	return hIntersects(i->x,i->y,i->r);

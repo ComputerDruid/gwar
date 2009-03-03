@@ -6,7 +6,7 @@
 #include "SDL/SDL.h"
 class Hero : public Item {
 	public:
-		Hero(double,double,int,SDL_Surface*,int,Bumper*);
+		Hero(double,double,int,SDL_Surface*,int,Bumper**);
 		double dy;
 		double dx;
 		void update();
@@ -31,7 +31,7 @@ class Hero : public Item {
 		int xflash;
 		int yflash;
 		int flashcount;
-		Bumper* bump;
+		Bumper** bump;
 		int numBumpers;
 		static const int SPEED=3;
 		SDL_Surface* sprite;

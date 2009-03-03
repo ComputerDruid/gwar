@@ -5,7 +5,7 @@
 #include "SDL/SDL.h"
 #include "Display.h"//has blit method
 
-Hero::Hero(double x, double y, int r, SDL_Surface* s, int n, Bumper* b) : Item(x,y,r) {
+Hero::Hero(double x, double y, int r, SDL_Surface* s, int n, Bumper** b) : Item(x,y,r) {
 	jumps=0;
 	tiedcount=0;
 	sprite=s;
@@ -39,9 +39,11 @@ void Hero::update() {
 			dx--;
 	}
 	if (checkVBumper()){
+		printf("==VBumper Collision==\n");
 		dy=abs(dy);
 	}
 	else if (checkHBumper()){
+		printf("==HBumper Collision==\n");
 		dx=-dx;
 	}
 
@@ -77,7 +79,7 @@ void Hero::attack(){
 void Hero::fastFall(){
 	if(tiedcount==0){
 		if(onBumper()){
-			if(bump[onWhatBumper()].passthrough){
+			if(bump[onWhatBumper()]->passthrough){
 				y++;
 				dy=10;
 			}
@@ -95,7 +97,7 @@ void Hero::draw(SDL_Surface* screen){
 }
 bool Hero::overBumper(){
 	for (int k=0; k<numBumpers;k++){
-		if(bump[k].overBumper(this)){
+		if(bump[k]->overBumper(this)){
 			return true;
 		}
 	}
@@ -110,8 +112,8 @@ bool Hero::checkHBumper(){
 bool Hero::checkVBumper(){
 	int k = checkBumper(0,dy);
 	if (k!=-1){
-		if (y<bump[k].getY()){
-			y= bump[k].getY()-r;
+		if (y<bump[k]->getY()){
+			y= bump[k]->getY()-r;
 			dy=0;
 			return false;
 		}
@@ -121,7 +123,7 @@ bool Hero::checkVBumper(){
 }
 bool Hero::onBumper(){
 	for(int k=0;k<numBumpers;k++){
-		if (bump[k].onBumper(this)){
+		if (bump[k]->onBumper(this)){
 			return true;
 		}
 	}
@@ -129,7 +131,7 @@ bool Hero::onBumper(){
 }
 int Hero::onWhatBumper(){
 	for(int k=0;k<numBumpers;k++){
-		if (bump[k].onBumper(this)){
+		if (bump[k]->onBumper(this)){
 			return k;
 		}
 	}
@@ -137,7 +139,7 @@ int Hero::onWhatBumper(){
 }
 int Hero::checkBumper(double pdx, double pdy){
 	for(int k=0;k<numBumpers;k++){
-		if( checkBumper(bump[k],pdy,pdx))
+		if( checkBumper(*bump[k],pdy,pdx))
 			return k;
 	}
 	return -1;
