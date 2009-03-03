@@ -51,7 +51,7 @@ int main(int argc, char* argv[]){
 	//bump[0]= Bumper(100,300,400,10);
 	Uint32 black = SDL_MapRGB(screen->format, 0, 0, 0);
 	Uint32 white = SDL_MapRGB(screen->format, 255, 255, 255);
-	bump[0] = new Bumper(100,300,400,10,create_rectangle(400,10,black));
+	bump[0] = new Bumper(100,300,400,20,create_rectangle(400,20,black));
 	h = new Hero(400,200,10,create_rectangle(10*2,10*2,white),1,bump);
 	printf("=Hero Created=\n");
 	SDL_Event event;
@@ -65,6 +65,10 @@ int main(int argc, char* argv[]){
 					h->jump();
 				else if(event.key.keysym.sym==SDLK_DOWN)
 					h->fastFall();
+				else if(event.key.keysym.sym==SDLK_RSHIFT)
+					h->attack();
+				else if(event.key.keysym.sym==SDLK_RCTRL)
+					h->attack();
 			}
 		}
 		input();

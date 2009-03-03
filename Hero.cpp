@@ -25,7 +25,7 @@ void Hero::update() {
 	if (onbumper){
 		if (accel==0){
 			if(tiedcount==0)
-				dx=dx*.975;//friction
+				dx=dx*.9;//friction
 		}
 		if(dy>=0){
 			jumps=0;
@@ -115,7 +115,7 @@ bool Hero::checkHBumper(){
 bool Hero::checkVBumper(){
 	int k = checkBumper(0,dy);
 	if (k!=-1){
-		if (y<bump[k]->getY()){
+		if (y<bump[k]->getY()||dy>0){
 			y= bump[k]->getY()-r;
 			if(dy>0)
 				dy=0;
