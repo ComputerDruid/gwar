@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "Bumper.h"
-#include "Hero.h"
-#include "Item.h"
+#include "bumper.h"
+#include "hero.h"
+#include "item.h"
 #include "SDL/SDL.h"
-#include "Display.h"//has blit method
+#include "display.h"//has blit method
 
 Hero::Hero(double x, double y, int r, SDL_Surface* s, int n, Bumper** b) : Item(x,y,r) {
 	jumps=0;

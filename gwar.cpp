@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include "Hero.h"
-#include "Bumper.h"
+#include "hero.h"
+#include "bumper.h"
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include <string>
-#include "Display.h" //contains blit method
+#include "display.h" //contains blit method
 Hero* h;
 SDL_Surface* background = NULL;
 SDL_Surface* screen = NULL;

@@ -1,8 +1,8 @@
 #ifdef HERO_H
 #else
 #define HERO_H
-#include "Item.h"
-#include "Bumper.h"
+#include "item.h"
+#include "bumper.h"
 #include "SDL/SDL.h"
 class Hero : public Item {
 	public:

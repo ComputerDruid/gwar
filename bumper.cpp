@@ -1,5 +1,5 @@
-#include "Bumper.h"
-#include "Display.h"
+#include "bumper.h"
+#include "display.h"
 #include <math.h>
 Bumper::Bumper(double xnew, double ynew, double width, double height, Uint32 c){
 	init(xnew,ynew,width,height,false,c);

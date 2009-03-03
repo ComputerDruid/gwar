@@ -2,8 +2,8 @@
 #else
 #define BUMPER_H
 #include "SDL/SDL.h"
-#include "Item.h"
-//#include "Hero.h"
+#include "item.h"
+//#include "hero.h"
 class Bumper{
 	public:
 		bool passthrough;
