@@ -8,9 +8,9 @@ class Bumper{
 	public:
 		bool passthrough;
 		SDL_Rect bouds;
-		Bumper(double,double,double,double,SDL_Surface*);
-		Bumper(double,double,double,double,bool,SDL_Surface* s);
-		void init(double,double,double,double,bool,SDL_Surface* s);
+		Bumper(double,double,double,double,Uint32);
+		Bumper(double,double,double,double,bool,Uint32);
+		void init(double,double,double,double,bool,Uint32 s);
 		double getX();
 		double getY();
 		double getWidth();

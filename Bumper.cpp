@@ -1,20 +1,19 @@
 #include "Bumper.h"
 #include "Display.h"
 #include <math.h>
-Bumper::Bumper(double xnew, double ynew, double width, double height, SDL_Surface* s){
-	init(xnew,ynew,width,height,false,s);
+Bumper::Bumper(double xnew, double ynew, double width, double height, Uint32 c){
+	init(xnew,ynew,width,height,false,c);
 }
-Bumper::Bumper(double xnew, double ynew, double newwidth, double newheight, bool pt, SDL_Surface* s){
-	init(xnew,ynew,newwidth,newheight,pt,s);
+Bumper::Bumper(double xnew, double ynew, double newwidth, double newheight, bool pt, Uint32 c){
+	init(xnew,ynew,newwidth,newheight,pt,c);
 }
-void Bumper::init(double xnew, double ynew, double newwidth, double newheight, bool pt, SDL_Surface* s){
+void Bumper::init(double xnew, double ynew, double newwidth, double newheight, bool pt, Uint32 c){
 	passthrough=pt;
 	x=xnew;
 	y=ynew;
 	width=newwidth;
 	height=newheight;
-	suf=s;
-	printf("==Bumper constructor called with (%f,%f) %d\n",getX(),y,s);
+	suf=create_rectangle(400,20,c);
 }
 double Bumper::getX(){
 	return x;
