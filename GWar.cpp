@@ -49,11 +49,10 @@ int main(int argc, char* argv[]){
 	int k = 0;
 	//bump = Bumper[1];
 	//bump[0]= Bumper(100,300,400,10);
-	bump[0] = new Bumper(100,300,400,10,sprite);
-	printf("=brand new bump's getX=: %f\n",bump[0]->getX());
-	Bumper b = Bumper(100,300,400,10,sprite);
-	printf("=brand new b's getX=: %f\n",b.getX());
-	h = new Hero(400,200,10,sprite,1,bump);
+	Uint32 black = SDL_MapRGB(screen->format, 0, 0, 0);
+	Uint32 white = SDL_MapRGB(screen->format, 255, 255, 255);
+	bump[0] = new Bumper(100,300,400,10,create_rectangle(400,10,black));
+	h = new Hero(400,200,10,create_rectangle(10*2,10*2,white),1,bump);
 	printf("=Hero Created=\n");
 	SDL_Event event;
 	while (running){

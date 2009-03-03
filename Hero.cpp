@@ -93,7 +93,7 @@ void Hero::fastFall(){
 }
 //TODO:Bumper Methods
 void Hero::draw(SDL_Surface* screen){
-	blit(x,y,sprite,screen);
+	blit(x-r,y-r,sprite,screen);
 }
 bool Hero::overBumper(){
 	for (int k=0; k<numBumpers;k++){
