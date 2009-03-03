@@ -33,8 +33,8 @@ double Bumper::getHeight(){
 	
 }*/
 void Bumper::draw(SDL_Surface* screen){
-	blit(x,y,suf,screen);
-	printf("===Drawing bumper (%d) at (%f,%f)===\n",suf,x,y);
+	blit((int)x,(int)y,suf,screen);
+	//printf("===Drawing bumper (%d) at (%f,%f)===\n",suf,x,y);
 }
 bool Bumper::hIntersects(Item* i){
 	return hIntersects(i->x,i->y,i->r);

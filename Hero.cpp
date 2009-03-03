@@ -27,7 +27,7 @@ void Hero::update() {
 			if(tiedcount==0)
 				dx=dx*.975;//friction
 		}
-		if(dy>0){
+		if(dy>=0){
 			jumps=0;
 			dy=0;
 		}
@@ -38,32 +38,35 @@ void Hero::update() {
 		if(accel<0&&dx>-SPEED)
 			dx--;
 	}
+	//apply gravity
+	if(!onbumper)
+		dy+=.5;
+
+	//apply motion
+	x+=dx;
+	y+=dy;
+
 	if (checkVBumper()){
-		printf("==VBumper Collision==\n");
-		dy=abs(dy);
+		//printf("==VBumper Collision==\n");
+		dy=abs((int)dy);
 	}
 	else if (checkHBumper()){
-		printf("==HBumper Collision==\n");
+		//printf("==HBumper Collision==\n");
 		dx=-dx;
 	}
 
 
-	//apply gravity
-	if(!onbumper)
-		dy+=.5;
-	//apply motion
-	x+=dx;
-	y+=dy;
 	//TODO: check collisions
 	
-	printf("updated\n");
+	//printf("updated\n");
 }
 void Hero::jump(){
+	printf("jump! tiedcount:%d jumps:%d\n",tiedcount,jumps);
 	if(tiedcount==0)
 		if(jumps<2){
-			dy = -2.5*SPEED;
+			dy = -1.5*SPEED;
 			jumps++;
-			//if(!onbumper)
+			if(!onBumper())
 				dx=0;
 		}
 }
@@ -93,7 +96,7 @@ void Hero::fastFall(){
 }
 //TODO:Bumper Methods
 void Hero::draw(SDL_Surface* screen){
-	blit(x-r,y-r,sprite,screen);
+	blit((int)(x-r),(int)(y-r),sprite,screen);
 }
 bool Hero::overBumper(){
 	for (int k=0; k<numBumpers;k++){
@@ -114,7 +117,8 @@ bool Hero::checkVBumper(){
 	if (k!=-1){
 		if (y<bump[k]->getY()){
 			y= bump[k]->getY()-r;
-			dy=0;
+			if(dy>0)
+				dy=0;
 			return false;
 		}
 		return true;

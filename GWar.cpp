@@ -26,16 +26,16 @@ SDL_Surface* load_image(std::string fname){
 void input(){
 	Uint8* keystates = SDL_GetKeyState(NULL);
 	a=0;
-	if(keystates[SDLK_UP])
-		printf("up key pressed\n");
-	if(keystates[SDLK_DOWN])
-		printf("down key pressed\n");
+	//if(keystates[SDLK_UP])
+		//printf("up key pressed\n");
+	//if(keystates[SDLK_DOWN])
+		//printf("down key pressed\n");
 	if(keystates[SDLK_LEFT]){
-		printf("left key pressed\n");
+		//printf("left key pressed\n");
 		a--;
 	}
 	if(keystates[SDLK_RIGHT]){
-		printf("right key pressed\n");
+		//printf("right key pressed\n");
 		a++;
 	}
 }	
@@ -67,7 +67,6 @@ int main(int argc, char* argv[]){
 					h->fastFall();
 			}
 		}
-		printf("==Frame==\n");
 		input();
 		h->setAccel(a);
 		h->update();
@@ -79,11 +78,10 @@ int main(int argc, char* argv[]){
 	return 0;
 }
 void display(){
-	printf("Drawing screen\n");
-	printf("blanking screen\n");
+	//printf("Drawing screen\n");
+	//printf("blanking screen\n");
 	blit(0,0,background,screen);
 	h->draw(screen);
-	printf("bump[0].getX(): %f\n",bump[0]->getX());
 	bump[0]->draw(screen);
 	SDL_Flip(screen);
 }

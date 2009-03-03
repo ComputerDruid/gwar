@@ -33,7 +33,7 @@ class Hero : public Item {
 		int flashcount;
 		Bumper** bump;
 		int numBumpers;
-		static const int SPEED=3;
+		static const int SPEED=6;
 		SDL_Surface* sprite;
 };
 #endif
