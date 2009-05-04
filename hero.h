@@ -6,7 +6,7 @@
 #include "SDL/SDL.h"
 class Hero : public Item {
 	public:
-		Hero(double,double,int,SDL_Surface*,int,Bumper**);
+		Hero(double,double,int,int,SDL_Surface*,int,Bumper**);
 		double dy;
 		double dx;
 		void update();
@@ -18,6 +18,8 @@ class Hero : public Item {
 		bool onScreen(int,int);
 	private:
 		//color c
+		double startx;
+		double starty;
 		bool overBumper();
 		bool checkHBumper();
 		bool checkVBumper();
@@ -25,12 +27,14 @@ class Hero : public Item {
 		int onWhatBumper();
 		int checkBumper(double,double);
 		bool checkBumper(Bumper,double,double);
+		bool offScreen();
 		int jumps;
 		int tiedcount;
 		int accel;
 		int xflash;
 		int yflash;
 		int flashcount;
+		int lives;
 		Bumper** bump;
 		int numBumpers;
 		static const int SPEED=6;

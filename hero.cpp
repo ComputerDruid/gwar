@@ -5,7 +5,7 @@
 #include "SDL/SDL.h"
 #include "display.h"//has blit method
 
-Hero::Hero(double x, double y, int r, SDL_Surface* s, int n, Bumper** b) : Item(x,y,r) {
+Hero::Hero(double x, double y, int r, int l, SDL_Surface* s, int n, Bumper** b) : Item(x,y,r) {
 	jumps=0;
 	tiedcount=0;
 	sprite=s;
@@ -14,11 +14,15 @@ Hero::Hero(double x, double y, int r, SDL_Surface* s, int n, Bumper** b) : Item(
 	dy=0;
 	dx=0;
 	accel=0;
+	lives=l;
+	startx=x;
+	starty=y;
 }
 void Hero::setAccel(int a){
 	accel=a;
 }
 void Hero::update() {
+	if (lives<=0)return;
 	bool onbumper=onBumper();
 	if (tiedcount>0)
 		tiedcount--;
@@ -57,8 +61,20 @@ void Hero::update() {
 
 
 	//TODO: check collisions
-	
+	if (offScreen()){
+		lives--;
+		printf("Lives left: %d\n",lives);
+		x=startx;
+		y=starty;
+		dx=0;
+		dy=0;
+	}
 	//printf("updated\n");
+}
+bool Hero::offScreen(){
+	if (x>640||x<0||y>480||y<0)
+		return true;
+	return false;
 }
 void Hero::jump(){
 	printf("jump! tiedcount:%d jumps:%d\n",tiedcount,jumps);
@@ -96,7 +112,8 @@ void Hero::fastFall(){
 }
 //TODO:Bumper Methods
 void Hero::draw(SDL_Surface* screen){
-	blit((int)(x-r),(int)(y-r),sprite,screen);
+	if(lives>0)
+		blit((int)(x-r),(int)(y-r),sprite,screen);
 }
 bool Hero::overBumper(){
 	for (int k=0; k<numBumpers;k++){
