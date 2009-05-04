@@ -70,13 +70,17 @@ int main(int argc, char* argv[]){
 					h->attack();
 				else if(event.key.keysym.sym==SDLK_RCTRL)
 					h->attack();
+				else if(event.key.keysym.sym==SDLK_LSHIFT)
+					h->attack();
+				else if(event.key.keysym.sym==SDLK_LCTRL)
+					h->attack();
 			}
 		}
 		input();
 		h->setAccel(a);
 		h->update();
 		display();
-		SDL_Delay(100);
+		SDL_Delay(50);
 	}
 	SDL_FreeSurface(background);
 	SDL_Quit();
