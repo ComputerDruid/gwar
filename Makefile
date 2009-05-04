@@ -1,28 +1,17 @@
-JFLAGS = -g -d build -cp build 
-JC = javac
-.SUFFIXES: .java .class
-.java.class:
-	        $(JC) $(JFLAGS) $*.java
-
-CLASSES = \
-	GWar.java \
-	Hero.java \
-	Bumper.java \
-	SpeedBumper.java \
-	Item.java \
-	MainMenu.java
-
-default: classes
-
-classes: $(CLASSES:.java=.class)
-
-init:
-	$(JC) $(JFLAGS) *.java
-
-run: 
-	cd build; java GWar
-debug:
-	cd build; java GWar -d
-
+default: gwar
+gwar: bumper.o display.o gwar.o hero.o item.o
+	g++ -lSDL -lSDL_image bumper.o display.o gwar.o hero.o item.o -o gwar
+hero.o: hero.cpp
+	g++ -c hero.cpp
+display.o: display.cpp
+	g++ -c display.cpp
+item.o: item.cpp
+	g++ -c item.cpp
+bumper.o: bumper.cpp
+	g++ -c bumper.cpp
+gwar.o: gwar.cpp
+	g++ -c gwar.cpp
+run: gwar
+	./gwar
 clean:
-	$(RM) build/*.class
+	rm gwar *.o
