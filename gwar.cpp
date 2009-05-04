@@ -5,13 +5,15 @@
 #include "SDL/SDL_image.h"
 #include <string>
 #include "display.h" //contains blit method
-Hero* h;
+Hero *h1;
+Hero *h2;
 SDL_Surface* background = NULL;
 SDL_Surface* screen = NULL;
 SDL_Surface* sprite = NULL;
 void display();
 int initDisplay();
-int a=0;
+int a1=0;
+int a2=0;
 Bumper *bump[1];
 
 SDL_Surface* load_image(std::string fname){
@@ -25,18 +27,19 @@ SDL_Surface* load_image(std::string fname){
 
 void input(){
 	Uint8* keystates = SDL_GetKeyState(NULL);
-	a=0;
-	//if(keystates[SDLK_UP])
-		//printf("up key pressed\n");
-	//if(keystates[SDLK_DOWN])
-		//printf("down key pressed\n");
+	a1=0;
+	a2=0;
 	if(keystates[SDLK_LEFT]){
-		//printf("left key pressed\n");
-		a--;
+		a1--;
 	}
 	if(keystates[SDLK_RIGHT]){
-		//printf("right key pressed\n");
-		a++;
+		a1++;
+	}
+	if(keystates[SDLK_a]){
+		a2--;
+	}
+	if(keystates[SDLK_d]){
+		a2++;
 	}
 }	
 
@@ -53,8 +56,9 @@ int main(int argc, char* argv[]){
 	Uint32 white = SDL_MapRGB(screen->format, 255, 255, 255);
 	Uint32 dblue = SDL_MapRGB(screen->format, 0, 0, 50);
 	bump[0] = new Bumper(100,300,400,20,dblue);
-	h = new Hero(400,200,10,3,create_rectangle(10*2,10*2,white),1,bump);
-	printf("=Hero Created=\n");
+	h1 = new Hero(400,200,10,3,create_rectangle(10*2,10*2,white),1,bump);
+	h2 = new Hero(200,200,10,3,create_rectangle(10*2,10*2,black),1,bump);
+	printf("=Heroes Created=\n");
 	SDL_Event event;
 	while (running){
 		while(SDL_PollEvent( &event) ){
@@ -62,23 +66,39 @@ int main(int argc, char* argv[]){
 				running=false;
 			}
 			if(event.type==SDL_KEYDOWN){
-				if(event.key.keysym.sym==SDLK_UP)
-					h->jump();
+				if (event.key.keysym.sym==SDLK_q)
+					running=false;//quit
+				else if(event.key.keysym.sym==SDLK_UP)
+					h1->jump();
 				else if(event.key.keysym.sym==SDLK_DOWN)
-					h->fastFall();
+					h1->fastFall();
 				else if(event.key.keysym.sym==SDLK_RSHIFT)
-					h->attack();
+					h1->attack();
 				else if(event.key.keysym.sym==SDLK_RCTRL)
-					h->attack();
+					h1->attack();
 				else if(event.key.keysym.sym==SDLK_LSHIFT)
-					h->attack();
+					h1->attack();
 				else if(event.key.keysym.sym==SDLK_LCTRL)
-					h->attack();
+					h1->attack();
+				else if(event.key.keysym.sym==SDLK_w)
+					h2->jump();
+				else if(event.key.keysym.sym==SDLK_s)
+					h2->fastFall();
+				else if(event.key.keysym.sym==SDLK_q)
+					h2->attack();
+				else if(event.key.keysym.sym==SDLK_e)
+					h2->attack();
+				//else if(event.key.keysym.sym==SDLK_LSHIFT)
+				//	h2->attack();
+				//else if(event.key.keysym.sym==SDLK_LCTRL)
+				//	h2->attack();
 			}
 		}
 		input();
-		h->setAccel(a);
-		h->update();
+		h1->setAccel(a1);
+		h2->setAccel(a2);
+		h1->update();
+		h2->update();
 		display();
 		SDL_Delay(50);
 	}
@@ -90,7 +110,8 @@ void display(){
 	//printf("Drawing screen\n");
 	//printf("blanking screen\n");
 	blit(0,0,background,screen);
-	h->draw(screen);
+	h1->draw(screen);
+	h2->draw(screen);
 	bump[0]->draw(screen);
 	SDL_Flip(screen);
 }
