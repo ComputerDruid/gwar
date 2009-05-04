@@ -1,3 +1,4 @@
 gwar
 *.o
 *.class
+*~
