@@ -1,2 +1,0 @@
-#!/bin/sh
-g++ -lSDL -lSDL_image gwar.cpp hero.cpp item.cpp display.cpp bumper.cpp -o gwar
