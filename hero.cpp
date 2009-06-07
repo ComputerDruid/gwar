@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "bumper.h"
 #include "hero.h"
 #include "item.h"
@@ -14,6 +15,7 @@ Hero::Hero(double x, double y, int r, int l, SDL_Surface* s, int n, Bumper** b) 
 	dy=0;
 	dx=0;
 	accel=0;
+	mass=1;
 	lives=l;
 	startx=x;
 	starty=y;
@@ -181,6 +183,49 @@ bool Hero::onScreen(int width, int height){
 		return true;
 	return false;
 }
-//void Hero::checkPlayer(Hero p)}{
-//	if (intersects(p)){
+bool Hero::intersects(Hero* p){
+	return ( sqrt( pow(x - p->x,2) + pow(y - p->y,2) ) < r + p->r);
+}
+void Hero::checkPlayer(Hero* p){
+	if(intersects(p)){
+		double angle = atan2(p->y-y,p->x-x)+M_PI;
+		double phi = angle;
 
+		double v1i = sqrt(pow(dx,2)+pow(dy,2));
+		double v2i = sqrt(pow(p->dx,2)+pow(p->dy,2));
+		double ang1 = atan2(dy,dx);
+		double ang2 = atan2(p->dy,p->dx);
+
+
+		double v1xr = v1i*cos((ang1-phi));
+		double v1yr = v1i*sin((ang1-phi));
+		double v2xr = v2i*cos((ang2-phi));
+		double v2yr = v2i*sin((ang2-phi));
+
+		double v1fxr = ((mass-p->mass)*v1xr+(2*p->mass)*v2xr)/(mass+p->mass);
+		double v2fxr = ((2*mass)*v1xr+(p->mass-mass)*v2xr)/(mass+p->mass);
+		double v1fyr = v1yr;
+		double v2fyr = v2yr;
+
+		double v1fx = cos(phi)*v1fxr+cos(phi+M_PI/2)*v1fyr;
+		double v1fy = sin(phi)*v1fxr+sin(phi+M_PI/2)*v1fyr;
+		double v2fx = cos(phi)*v2fxr+cos(phi+M_PI/2)*v2fyr;
+		double v2fy = sin(phi)*v2fxr+sin(phi+M_PI/2)*v2fyr;
+
+		dx = v1fx;
+		dy = v1fy;
+		p->dx = v2fx;
+		p->dy = v2fy;
+		//System.out.println("DX: "+dx);
+		//System.out.println("DY: "+dy);
+		//System.out.println("P	DX: "+p.dx);
+		//System.out.println("P	DY: "+p.dy);
+		double newx = (p->x+x)/2+cos(angle)*(r+1);
+		double newy = (p->y+y)/2+sin(angle)*(r+1);
+		p->x = (p->x+x)/2+cos(angle+M_PI)*(p->r+1);
+		p->y = (p->y+y)/2+sin(angle+M_PI)*(p->r+1);
+		x=newx;
+		y=newy;
+		tiedcount+=2;
+	}
+}

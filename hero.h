@@ -9,6 +9,7 @@ class Hero : public Item {
 		Hero(double,double,int,int,SDL_Surface*,int,Bumper**);
 		double dy;
 		double dx;
+		double mass;
 		void update();
 		void jump();
 		void draw(SDL_Surface*);
@@ -16,6 +17,7 @@ class Hero : public Item {
 		void attack();
 		void fastFall();
 		bool onScreen(int,int);
+		void checkPlayer(Hero*);
 	private:
 		//color c
 		double startx;
@@ -28,6 +30,7 @@ class Hero : public Item {
 		int checkBumper(double,double);
 		bool checkBumper(Bumper,double,double);
 		bool offScreen();
+		bool intersects(Hero*);
 		int jumps;
 		int tiedcount;
 		int accel;

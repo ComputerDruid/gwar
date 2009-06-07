@@ -99,6 +99,7 @@ int main(int argc, char* argv[]){
 		h2->setAccel(a2);
 		h1->update();
 		h2->update();
+		h1->checkPlayer(h2);
 		display();
 		SDL_Delay(50);
 	}
@@ -107,8 +108,6 @@ int main(int argc, char* argv[]){
 	return 0;
 }
 void display(){
-	//printf("Drawing screen\n");
-	//printf("blanking screen\n");
 	blit(0,0,background,screen);
 	h1->draw(screen);
 	h2->draw(screen);
