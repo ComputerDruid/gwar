@@ -15,6 +15,15 @@ int initDisplay();
 int a1=0;
 int a2=0;
 Bumper *bump[1];
+SDL_Event event;
+enum state {
+	init = 0,
+	running = 1,
+	stopped = 2,
+	quitting = -1
+};
+
+state gamestate = init;
 
 SDL_Surface* load_image(std::string fname){
 	SDL_Surface* tImage = NULL;
@@ -42,32 +51,25 @@ void input(){
 		a2++;
 	}
 }	
-
-int main(int argc, char* argv[]){
-	bool running = true;
-	printf("=Ready=\n");
-	if(initDisplay()!=0)
-		return 1;
-	printf("=Display Initialized=\n");
-	int k = 0;
-	//bump = Bumper[1];
-	//bump[0]= Bumper(100,300,400,10);
-	Uint32 black = SDL_MapRGB(screen->format, 0, 0, 0);
-	Uint32 white = SDL_MapRGB(screen->format, 255, 255, 255);
-	Uint32 dblue = SDL_MapRGB(screen->format, 0, 0, 50);
-	bump[0] = new Bumper(100,300,400,20,dblue);
-	h1 = new Hero(400,200,10,3,create_rectangle(10*2,10*2,white),1,bump);
-	h2 = new Hero(200,200,10,3,create_rectangle(10*2,10*2,black),1,bump);
-	printf("=Heroes Created=\n");
-	SDL_Event event;
-	while (running){
+int countPlayers(){
+	int count = 0;
+	if (h1->isAlive())
+		count++;
+	if (h2->isAlive())
+		count++;
+	printf("count: %d\n",count);
+	return count;
+}
+void gameLoop(){
+	gamestate=running;
+	while (gamestate == running){
 		while(SDL_PollEvent( &event) ){
 			if(event.type==SDL_QUIT){
-				running=false;
+				gamestate=quitting;
 			}
 			if(event.type==SDL_KEYDOWN){
 				if (event.key.keysym.sym==SDLK_q)
-					running=false;//quit
+					gamestate=quitting;
 				else if(event.key.keysym.sym==SDLK_UP)
 					h1->jump();
 				else if(event.key.keysym.sym==SDLK_DOWN)
@@ -100,9 +102,36 @@ int main(int argc, char* argv[]){
 		h1->update();
 		h2->update();
 		h1->checkPlayer(h2);
+		if (countPlayers()<=1){
+			gamestate = stopped;
+			return;
+		}
 		display();
 		SDL_Delay(50);
 	}
+}
+void newGame(){
+	//bump = Bumper[1];
+	//bump[0]= Bumper(100,300,400,10);
+	Uint32 black = SDL_MapRGB(screen->format, 0, 0, 0);
+	Uint32 white = SDL_MapRGB(screen->format, 255, 255, 255);
+	Uint32 dblue = SDL_MapRGB(screen->format, 0, 0, 50);
+	bump[0] = new Bumper(100,300,400,20,dblue);
+	h1 = new Hero(400,200,10,3,create_rectangle(10*2,10*2,white),1,bump);
+	h2 = new Hero(200,200,10,3,create_rectangle(10*2,10*2,black),1,bump);
+	printf("=Heroes Created=\n");
+	gameLoop();
+}
+int main(int argc, char* argv[]){
+	printf("=Ready=\n");
+	if(initDisplay()!=0)
+		return 1;
+	printf("=Display Initialized=\n");
+	int k = 0;
+	do {
+		newGame();
+	} while (gamestate != quitting);
+	printf("done, gamestate= %d\n", gamestate);
 	SDL_FreeSurface(background);
 	SDL_Quit();
 	return 0;

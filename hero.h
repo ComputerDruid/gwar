@@ -17,7 +17,9 @@ class Hero : public Item {
 		void attack();
 		void fastFall();
 		bool onScreen(int,int);
+		bool isAlive();
 		void checkPlayer(Hero*);
+		int lives;
 	private:
 		//color c
 		double startx;
@@ -37,7 +39,6 @@ class Hero : public Item {
 		int xflash;
 		int yflash;
 		int flashcount;
-		int lives;
 		Bumper** bump;
 		int numBumpers;
 		static const int SPEED=6;

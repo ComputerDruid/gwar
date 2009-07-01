@@ -78,6 +78,9 @@ bool Hero::offScreen(){
 		return true;
 	return false;
 }
+bool Hero::isAlive(){
+	return (lives>0);
+}
 void Hero::jump(){
 	printf("jump! tiedcount:%d jumps:%d\n",tiedcount,jumps);
 	if(tiedcount==0)
@@ -162,7 +165,7 @@ int Hero::onWhatBumper(){
 }
 int Hero::checkBumper(double pdx, double pdy){
 	for(int k=0;k<numBumpers;k++){
-		if( checkBumper(*bump[k],pdy,pdx))
+		if( checkBumper(*bump[k],pdx,pdy))
 			return k;
 	}
 	return -1;
