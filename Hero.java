@@ -88,8 +88,8 @@
 			onbumper=onBumper();
 		}
 		 public double	nearestBorder(Hero h){
-			double wL =	h.x,wR =	world.WIDTH-h.x;
-			double hT =	h.y,hB =	world.HEIGHT-h.y;
+			double wL =	h.x,wR =	GWar.WIDTH-h.x;
+			double hT =	h.y,hB =	GWar.HEIGHT-h.y;
 			double min=wL;
 			if(wR	< min)
 			{
@@ -195,7 +195,7 @@
 		 public void fixBorderProblem(){
 			if(actionValue	==	-1)
 			{
-				actionValue	= nearestTargetBumper(world.WIDTH/2,world.HEIGHT/2,this,true);
+				actionValue	= nearestTargetBumper(GWar.WIDTH/2,GWar.HEIGHT/2,this,true);
 			}
 			else
 			{
@@ -244,7 +244,7 @@
 				}
 				attackLeft();
 			}
-			else if(dx>6&&world.WIDTH-x<50)
+			else if(dx>6&&GWar.WIDTH-x<50)
 			{
 				attackLeft();
 			}

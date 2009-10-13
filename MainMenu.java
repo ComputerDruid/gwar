@@ -71,15 +71,15 @@ class MainMenu {
 				counter++;
 				int k;
 				for (k=0;k<numPlayers;k++){
-					myBuffer.setColor(world.PCOLOR[k]);
+					myBuffer.setColor(GWar.PCOLOR[k]);
 					myBuffer.drawString("Human Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 				}
 				for (;k<numPlayers+numAI;k++){
-					myBuffer.setColor(world.PCOLOR[k]);
+					myBuffer.setColor(GWar.PCOLOR[k]);
 					myBuffer.drawString("AI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 				}
 				for (;k<numPlayers+numAI+numNick;k++){
-					myBuffer.setColor(world.PCOLOR[k]);
+					myBuffer.setColor(GWar.PCOLOR[k]);
 					myBuffer.drawString("NickAI Player",(int)(xScale*(tabspace*5+xoffset)),(int)(yScale*((counter+k)*spacebetweenlines+yoffset)));
 				}
 				k=-1;

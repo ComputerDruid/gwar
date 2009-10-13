@@ -272,7 +272,6 @@ public class GWar extends JPanel{
 		if(running==1){
 			drawScore(0,WIDTH-30,30);
 			drawScore(1,30,30);
-			String temp;
 			if (TOTALPLAYERS>=3){
 				drawScore(2,30, HEIGHT-30);
 				if (TOTALPLAYERS>=4){
@@ -328,8 +327,6 @@ public class GWar extends JPanel{
 		private boolean p2right = false;
 		private boolean p3left = false;
 		private boolean p3right = false;
-		private boolean p4left = false;
-		private boolean p4right = false;
 		private static final int P1JUMP=KeyEvent.VK_UP;
 		private static final int P1LEFT=KeyEvent.VK_LEFT;
 		private static final int P1RIGHT=KeyEvent.VK_RIGHT;
@@ -515,7 +512,7 @@ public class GWar extends JPanel{
 			}
 			catch(Exception e)
 			{
-				System.out.println("PlayerThread error.");
+				System.out.println("PlayerThread error: "+e.getMessage());
 			}
 		}
 	}	
