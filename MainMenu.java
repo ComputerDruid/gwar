@@ -10,6 +10,9 @@ class MainMenu {
 		double yScale;
 		GWar world;
 		int menustatus=0;//0-main 1-help 2-alt
+		final static int STATUS_MAIN=0;
+		final static int STATUS_HELP=1;
+		final static int STATUS_ALT=2;
 		int numPlayers=1;
 		int oldnumPlayers=2;
 		int[] pNumPlayers = {1,2,3};
@@ -58,10 +61,10 @@ class MainMenu {
 		  }*/
 		void drawB(java.awt.Graphics myBuffer){
 			myBuffer.setFont(new Font("SansSerif",Font.BOLD,(int)(15*yScale)));
-			if (menustatus==1){
+			if (menustatus==STATUS_HELP){
 				myBuffer.drawImage(helpscreen,0,0,(int)(WIDTH*xScale),(int)(HEIGHT*yScale),null);
 			}
-			else if (menustatus==2){
+			else if (menustatus==STATUS_ALT){
 				int counter = 0;
 				setSelectedColor(myBuffer,counter,selected);
 				myBuffer.drawString("Back",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
@@ -188,7 +191,7 @@ class MainMenu {
 		void moveUp(){
 			selected--;
 			if (selected < 0){
-				if(menustatus==2)
+				if(menustatus==STATUS_ALT)
 					selected=AltListSize-1;
 				else
 					selected=ListSize-1;
@@ -197,7 +200,7 @@ class MainMenu {
 		}
 		void moveDown(){
 			selected++;
-			if(menustatus==2){
+			if(menustatus==STATUS_ALT){
 				if (selected >= AltListSize)
 					selected=0;
 			}
@@ -211,13 +214,13 @@ class MainMenu {
 			world.newGame(HPSel,numPlayers,numAI,numNick);
 		}
 		void enter(){
-			if (menustatus==1){
-				menustatus=0;
+			if (menustatus==STATUS_HELP){
+				menustatus=STATUS_MAIN;
 			}
-			else if (menustatus==2){
+			else if (menustatus==STATUS_ALT){
 				if(selected==0){
 					if(numPlayers+numAI+numNick>=2&&numPlayers+numAI+numNick<=6){
-						menustatus=0;
+						menustatus=STATUS_MAIN;
 						selected=2;
 						if(oldnumPlayers!=numPlayers+numAI+numNick)
 							world.newBackgroundGame(numPlayers+numAI,numNick);
@@ -300,7 +303,7 @@ class MainMenu {
 					//drawB();
 				}
 				else if (selected==2){
-					menustatus=2;
+					menustatus=STATUS_ALT;
 					selected=0;
 					//drawB();
 				}
@@ -314,7 +317,7 @@ class MainMenu {
 				}
 				else if (selected==5){
 					oldnumPlayers=numPlayers+numAI+numNick;
-					menustatus=1;
+					menustatus=STATUS_HELP;
 					//drawB();
 				}
 				else if (selected==6){
