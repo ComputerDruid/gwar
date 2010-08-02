@@ -16,7 +16,8 @@ class MainMenu {
 		int numPlayers=1;
 		int oldnumPlayers=2;
 		int[] pNumPlayers = {1,2,3};
-		int HPSel=5;
+		int[] pHP = {1,2,3,4,5,10};
+		int HPIndex=4;
 		int PlayerSizeSel=25;
 		int PelletSizeSel=5;
 		int LevelSel=1;
@@ -116,9 +117,9 @@ class MainMenu {
 				counter = 4;
 				setSelectedColor(myBuffer,counter,selected);
 				myBuffer.drawString("Lives:",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
-				setSelectedColor(myBuffer,HPSel,1);
+				setSelectedColor(myBuffer,pHP[HPIndex],1);
 				setSelectedColor(myBuffer,0,0);
-				myBuffer.drawString(HPSel+"",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				myBuffer.drawString(pHP[HPIndex]+"",(int)(xScale*(tabspace+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 
 			}
 			else{
@@ -147,7 +148,7 @@ class MainMenu {
 				myBuffer.drawString("Islands",(int)(xScale*(tabspace*6+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 2;
 				setSelectedColor(myBuffer,counter,selected);
-				myBuffer.drawString("Game Setup ...     (Human: "+numPlayers+", AI: "+(numAI+numNick)+", Lives:"+HPSel+")",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
+				myBuffer.drawString("Game Setup ...     (Human: "+numPlayers+", AI: "+(numAI+numNick)+", Lives:"+pHP[HPIndex]+")",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
 				counter = 3;
 				setSelectedColor(myBuffer,counter,selected);
 				myBuffer.drawString("Toggle Fullscreen Mode",(int)(xScale*(0+xoffset)),(int)(yScale*(counter*spacebetweenlines+yoffset)));
@@ -211,7 +212,7 @@ class MainMenu {
 		}
 		void newGameCurrentSettings(){
 			world.loadLevel(LevelSel-1);
-			world.newGame(HPSel,numPlayers,numAI,numNick);
+			world.newGame(pHP[HPIndex],numPlayers,numAI,numNick);
 		}
 		void enter(){
 			if (menustatus==STATUS_HELP){
@@ -255,25 +256,10 @@ class MainMenu {
 					//drawB();
 				}
 				else if (selected==4){
-					if (HPSel==1){
-						HPSel=2;
+					HPIndex++;
+					if (HPIndex >=6) {
+						HPIndex = 0;
 					}
-					else if (HPSel==2){
-						HPSel=3;
-					}
-					else if (HPSel==3){
-						HPSel=4;
-					}
-					else if (HPSel==4){
-						HPSel=5;
-					}
-					else if (HPSel==5){
-						HPSel=10;
-					}
-					else if (HPSel==10){
-						HPSel=1;
-					}
-					//drawB();
 				}
 			}
 			else{
